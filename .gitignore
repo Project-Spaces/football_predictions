@@ -1,0 +1,21 @@
+# Environment and secrets
+.env
+.mcp.json
+credentials.json
+token.json
+
+# Temporary/intermediate files
+.tmp/
+
+# OS files
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
