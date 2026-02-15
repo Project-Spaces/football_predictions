@@ -1,7 +1,10 @@
 """
 Parse soccervista scraped markdown data.
 Extract matches, form data, and calculate win probabilities.
-Output top 20 clubs with 60-70% win chance to Excel.
+
+Supports two SoccerVista formats:
+  - Legacy: "10 on XXX" prediction markers
+  - Current: 1X2 column with [1], [X], or [2] predictions
 """
 
 import re
@@ -11,7 +14,6 @@ import sys
 
 def parse_form(text):
     """Extract W/D/L form indicators from text."""
-    # Form appears as W, D, or L separated by \<br>\<br>
     results = re.findall(r'\b([WDL])\b', text)
     return results
 
@@ -53,6 +55,20 @@ def count_form(form_list):
     return w, d, l
 
 
+def extract_team_and_form(col_text):
+    """Extract team name and form from a column containing form+team data.
+    Pattern: [L\\<br>\\<br>D\\<br>\\<br>W\\<br>\\<br>TeamName](url)
+    or: [TeamName\\<br>\\<br>W\\<br>\\<br>D\\<br>\\<br>L](url)
+    """
+    text = re.sub(r'\[|\]\([^\)]*\)', '', col_text)
+    text = text.replace('\\<br>\\<br>', '|').replace('\\<br>', '|')
+    parts = [p.strip() for p in text.split('|') if p.strip()]
+    form_raw = [p for p in parts if p in ('W', 'D', 'L')]
+    name_parts = [p for p in parts if p not in ('W', 'D', 'L')]
+    team_name = ' '.join(name_parts).strip()
+    return team_name, form_raw
+
+
 def parse_matches(filepath):
     """Parse the scraped markdown file and extract match data."""
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -61,9 +77,6 @@ def parse_matches(filepath):
     matches = []
     current_league = ""
     current_country = ""
-
-    # Find league headers: ![Country flag](...)[Country: League](...)
-    # and match rows with form data
 
     lines = content.split('\n')
 
@@ -85,18 +98,21 @@ def parse_matches(filepath):
                 current_league = league_info
             continue
 
-        # Check for match row with form data and prediction
-        if '10 on' not in line:
+        # Skip rows without form data (W/D/L indicators)
+        if not re.search(r'[WDL].*\\<br>', line) and not re.search(r'\\<br>.*[WDL]', line):
             continue
 
-        # Extract time
+        # Skip finished matches (FT) and live matches (with minute markers like 27')
+        # Only process upcoming matches with kickoff times
         time_match = re.search(r'\[(\d{2}:\d{2})\]', line)
-        kickoff_time = time_match.group(1) if time_match else ''
+        if not time_match:
+            continue
+        kickoff_time = time_match.group(1)
 
         # Split by | to get columns
         cols = line.split('|')
 
-        # We need to find the home team col, away team col, and prediction col
+        # Find form columns (home and away) and prediction
         home_col = ''
         away_col = ''
         prediction = ''
@@ -106,18 +122,21 @@ def parse_matches(filepath):
             if not col_stripped or col_stripped == '---':
                 continue
 
+            # Legacy format: "10 on XXX"
             if '10 on' in col_stripped:
                 pred_match = re.search(r'10 on (\w+)', col_stripped)
                 prediction = pred_match.group(1) if pred_match else ''
-
-            elif 'View details' in col_stripped:
                 continue
 
-            elif re.search(r'\d{2}:\d{2}', col_stripped) and not home_col:
-                # This is likely the time column, next form column is home
+            if 'View details' in col_stripped:
                 continue
 
-            elif re.search(r'[WDL].*\\<br>', col_stripped) or re.search(r'\\<br>.*[WDL]', col_stripped):
+            # Skip time column
+            if re.search(r'^\[?\d{2}:\d{2}\]?', col_stripped) and not home_col:
+                continue
+
+            # Form+team columns
+            if re.search(r'[WDL].*\\<br>', col_stripped) or re.search(r'\\<br>.*[WDL]', col_stripped):
                 if not home_col:
                     home_col = col_stripped
                 elif not away_col:
@@ -126,50 +145,68 @@ def parse_matches(filepath):
         if not home_col or not away_col:
             continue
 
-        # Extract home team name and form
-        # Home team: form comes first, team name last
-        # Pattern: [L\<br>\<br>D\<br>\<br>W\<br>\<br>D\<br>\<br>W\<br>\<br>Tottenham](url)
-        home_text = re.sub(r'\[|\]\([^\)]*\)', '', home_col)
-        home_text = home_text.replace('\\<br>\\<br>', '|').replace('\\<br>', '|')
-        home_parts = [p.strip() for p in home_text.split('|') if p.strip()]
-        home_form_raw = [p for p in home_parts if p in ('W', 'D', 'L')]
-        home_name_parts = [p for p in home_parts if p not in ('W', 'D', 'L')]
-        home_team = ' '.join(home_name_parts).strip()
+        home_team, home_form_raw = extract_team_and_form(home_col)
+        away_team, away_form_raw = extract_team_and_form(away_col)
 
-        # Extract away team name and form
-        away_text = re.sub(r'\[|\]\([^\)]*\)', '', away_col)
-        away_text = away_text.replace('\\<br>\\<br>', '|').replace('\\<br>', '|')
-        away_parts = [p.strip() for p in away_text.split('|') if p.strip()]
-        away_form_raw = [p for p in away_parts if p in ('W', 'D', 'L')]
-        away_name_parts = [p for p in away_parts if p not in ('W', 'D', 'L')]
-        away_team = ' '.join(away_name_parts).strip()
+        if not home_team or not away_team:
+            continue
+
+        # Determine prediction - check for new format (1X2 column)
+        if not prediction:
+            # New format: look for standalone [1], [X], or [2] in the columns
+            # These appear after the away team column
+            for col in cols:
+                col_stripped = col.strip()
+                # Match exactly [1] or [2] (not odds like [1.79])
+                if re.match(r'^\[([12X])\]\(', col_stripped):
+                    pred_val = re.match(r'^\[([12X])\]', col_stripped).group(1)
+                    if pred_val == '1':
+                        prediction = 'HOME'
+                    elif pred_val == '2':
+                        prediction = 'AWAY'
+                    elif pred_val == 'X':
+                        prediction = 'DRAW'
+                    break
+
+        # Skip draws - we only want win predictions
+        if prediction == 'DRAW' or prediction == 'X':
+            continue
 
         # Determine predicted winner
-        if prediction:
-            # Check which team the prediction favors
-            # "10 on TOT" means predicted = home team (Tottenham)
-            # We need to figure out if predicted team is home or away
-            pred_upper = prediction.upper()
-            home_upper = home_team.upper()[:3]
-            away_upper = away_team.upper()[:3]
-
-            if pred_upper == home_upper or home_upper.startswith(pred_upper) or pred_upper in home_team.upper().replace(' ', ''):
+        if prediction in ('HOME', '1') or (prediction and prediction not in ('AWAY', '2', 'DRAW', 'X')):
+            # Legacy: check if prediction abbreviation matches home or away
+            if prediction not in ('HOME', '1', 'AWAY', '2'):
+                pred_upper = prediction.upper()
+                home_upper = home_team.upper()[:3]
+                if pred_upper == home_upper or home_upper.startswith(pred_upper) or pred_upper in home_team.upper().replace(' ', ''):
+                    predicted_team = home_team
+                    predicted_form = home_form_raw
+                    opponent_form = away_form_raw
+                    opponent_team = away_team
+                    side = 'Home'
+                else:
+                    predicted_team = away_team
+                    predicted_form = away_form_raw
+                    opponent_form = home_form_raw
+                    opponent_team = home_team
+                    side = 'Away'
+            else:
                 predicted_team = home_team
                 predicted_form = home_form_raw
                 opponent_form = away_form_raw
                 opponent_team = away_team
                 side = 'Home'
-            else:
-                predicted_team = away_team
-                predicted_form = away_form_raw
-                opponent_form = home_form_raw
-                opponent_team = home_team
-                side = 'Away'
+        elif prediction in ('AWAY', '2'):
+            predicted_team = away_team
+            predicted_form = away_form_raw
+            opponent_form = home_form_raw
+            opponent_team = home_team
+            side = 'Away'
         else:
             continue
 
         win_prob = calculate_win_probability(predicted_form, opponent_form)
-        pw, pd, pl = count_form(predicted_form)
+        pw, pd_count, pl = count_form(predicted_form)
         ow, od, ol = count_form(opponent_form)
 
         matches.append({
@@ -181,7 +218,7 @@ def parse_matches(filepath):
             'Predicted Winner': predicted_team,
             'Predicted Side': side,
             'Winner Form (Last 5)': form_string(predicted_form),
-            'Winner W-D-L': f'{pw}-{pd}-{pl}',
+            'Winner W-D-L': f'{pw}-{pd_count}-{pl}',
             'Opponent': opponent_team,
             'Opponent Form (Last 5)': form_string(opponent_form),
             'Opponent W-D-L': f'{ow}-{od}-{ol}',
@@ -213,20 +250,17 @@ def main():
               f"{row['Winner Form (Last 5)']:11s} vs {row['Opponent Form (Last 5)']:11s} | "
               f"{row['Country']} - {row['League']}")
 
-    # Filter 60-70% range
-    filtered = df[(df['Win Probability %'] >= 60) & (df['Win Probability %'] <= 70)]
-    print(f"\n=== MATCHES WITH 60-70% WIN PROBABILITY: {len(filtered)} ===")
+    # Filter 60%+ (no upper ceiling - matching step reduces pool)
+    filtered = df[df['Win Probability %'] >= 60]
+    print(f"\n=== MATCHES WITH 60%+ WIN PROBABILITY: {len(filtered)} ===")
     for i, row in filtered.iterrows():
         print(f"  {row['Predicted Winner']:25s} ({row['Win Probability %']:5.1f}%) | "
               f"{row['Winner Form (Last 5)']:11s} vs {row['Opponent Form (Last 5)']:11s} | "
               f"{row['Country']} - {row['League']}")
 
-    # Top 20 from 60-70% range
-    top20 = filtered.head(20)
-
     # Save to Excel
-    top20.to_excel(output, index=False, sheet_name='Top 20 Predictions')
-    print(f"\nTop 20 saved to: {output}")
+    filtered.to_excel(output, index=False, sheet_name='Predictions 60%+')
+    print(f"\nFiltered predictions saved to: {output}")
 
     # Also save full dataset
     full_output = output.replace('.xlsx', '_full.xlsx')

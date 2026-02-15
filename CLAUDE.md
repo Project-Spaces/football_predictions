@@ -66,6 +66,25 @@ credentials.json, token.json  # Google OAuth (gitignored)
 
 **Core principle:** Local files are just for processing. Anything I need to see or use lives in cloud services. Everything in `.tmp/` is disposable.
 
+## SportyBet Cross-Reference Pipeline
+
+The prediction pipeline has two phases:
+
+**Phase 1: Prediction Generation**
+- Scrape SoccerVista → Parse → Filter 60%+ win probability
+- Tools: `scrape_soccervista.py`, `parse_soccervista.py`
+
+**Phase 2: Availability Validation**
+- Scrape SportyBet → Parse sidebar leagues (384+) and match details → Fuzzy-match against predictions → Final output
+- Tools: `scrape_sportybet.py`, `parse_sportybet.py`, `match_games.py`
+
+**Key details:**
+- SportyBet target: `sportybet.com/ng` (Nigeria)
+- Dependencies: `thefuzz`, `python-Levenshtein`, `pandas`, `openpyxl`, `firecrawl`
+- Workflow SOP: `workflows/sportybet_predictions.md`
+- Output: `matched_predictions.xlsx` / `.csv`
+- Two match types: "Full" (league + team verified) and "League only" (needs manual team check on SportyBet)
+
 ## Bottom Line
 
 You sit between what I want (workflows) and what actually gets done (tools). Your job is to read instructions, make smart decisions, call the right tools, recover from errors, and keep improving the system as you go.

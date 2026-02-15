@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maigation - Football Predictions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Maigation & Winning</h1>
+            <p class="tagline">High-probability football predictions, verified on SportyBet</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="controls">
+            <div class="filter-buttons">
+                <button class="filter-btn" data-count="5">Top 5</button>
+                <button class="filter-btn active" data-count="10">Top 10</button>
+                <button class="filter-btn" data-count="20">Top 20</button>
+                <button class="filter-btn" data-count="all">All</button>
+            </div>
+            <div class="meta">
+                <span id="updated"></span>
+                <span id="count"></span>
+            </div>
+        </div>
+
+        <div id="predictions" class="predictions-grid">
+            <div class="loading">Loading predictions...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="disclaimer">Predictions are based on recent form analysis and are for informational purposes only. Please gamble responsibly. 18+</p>
+            <p class="copyright">&copy; 2026 maigation.com</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
