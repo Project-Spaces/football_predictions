@@ -52,7 +52,7 @@ def csv_to_json(csv_path, output_path):
 
 def main():
     csv_path = sys.argv[1] if len(sys.argv) > 1 else 'matched_predictions.csv'
-    output_path = sys.argv[2] if len(sys.argv) > 2 else '../WebPage/predictions.json'
+    output_path = sys.argv[2] if len(sys.argv) > 2 else 'website/public/data/predictions.json'
 
     if not os.path.exists(csv_path):
         print(f"Error: {csv_path} not found. Run the prediction pipeline first.")

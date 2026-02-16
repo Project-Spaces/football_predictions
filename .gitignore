@@ -19,3 +19,7 @@ venv/
 # IDE
 .vscode/
 .idea/
+
+# Next.js
+website/node_modules/
+website/.next/
