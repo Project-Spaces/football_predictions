@@ -21,6 +21,7 @@
     "name": "maigation"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.6.2",
     "next": "16.1.6",

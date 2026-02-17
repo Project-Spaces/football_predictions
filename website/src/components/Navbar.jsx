@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="max-w-[960px] mx-auto px-4 w-full flex items-center justify-between h-16">
         <Link
           href="/"
-          className="text-xl font-bold text-accent tracking-tight"
+          className="text-2xl font-bold text-accent tracking-tight"
         >
           Pindexa
         </Link>
