@@ -1,6 +1,7 @@
 {
-  "name": "website",
+  "name": "sports-prediction",
   "version": "0.1.0",
+  "description": "A home with the mindset for success",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,8 +9,22 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "keywords": [
+    "sports",
+    "betting",
+    "sportybet",
+    "sporty",
+    "football",
+    "soccer"
+  ],
+  "author": {
+    "name": "maigation"
+  },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.6.2",
     "next": "16.1.6",
+    "next-auth": "^5.0.0-beta.30",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

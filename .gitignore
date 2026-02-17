@@ -23,3 +23,5 @@ venv/
 # Next.js
 website/node_modules/
 website/.next/
+website/.env.local
+website/pindexa.db
