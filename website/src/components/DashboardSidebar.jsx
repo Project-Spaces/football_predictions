@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: "⚡" },
@@ -44,15 +44,9 @@ export default function DashboardSidebar() {
         <div className="text-sm text-text-primary font-medium truncate">
           {session?.user?.name}
         </div>
-        <div className="text-xs text-text-secondary truncate mb-3">
+        <div className="text-xs text-text-secondary truncate">
           {session?.user?.email}
         </div>
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="text-xs text-text-secondary hover:text-red-400 transition-colors"
-        >
-          Sign out
-        </button>
       </div>
     </aside>
   );

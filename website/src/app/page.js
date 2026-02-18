@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getPredictions } from "@/lib/predictions";
 import PredictionCard from "@/components/PredictionCard";
+import { getStandings, getTopScorer, getNextFixture } from "@/lib/football-api";
 
 const FEATURES = [
   {
@@ -29,28 +30,8 @@ const FEATURES = [
   },
 ];
 
-const PL_TABLE = [
-  { pos: 1, team: "Arsenal", p: 26, gd: "+32", pts: 57, color: "#ef0107" },
-  { pos: 2, team: "Man City", p: 26, gd: "+30", pts: 53, color: "#6cabdd" },
-  { pos: 3, team: "Aston Villa", p: 26, gd: "+10", pts: 50, color: "#670e36" },
-  { pos: 4, team: "Man United", p: 26, gd: "+10", pts: 45, color: "#da291c" },
-  { pos: 5, team: "Chelsea", p: 26, gd: "+17", pts: 44, color: "#034694" },
-  { pos: 6, team: "Liverpool", p: 26, gd: "+6", pts: 42, color: "#c8102e" },
-];
-
-const PLAYER_STATS = {
-  name: "Erling Haaland",
-  team: "Man City",
-  position: "ST",
-  number: 9,
-  stats: [
-    { label: "Goals", value: "22" },
-    { label: "Assists", value: "6" },
-    { label: "Matches", value: "26" },
-    { label: "Form", value: "W-W-W" },
-  ],
-  form: ["W", "W", "W", "D", "W"],
-};
+// PL_TABLE and PLAYER_STATS are now fetched live from football-data.org
+// See src/lib/football-api.js — falls back to hardcoded data if API fails
 
 const RANK_STYLES = [
   { border: "border-gold/40", bg: "bg-gold/10", text: "text-gold", label: "1st", glow: "rank-1-glow" },
@@ -58,9 +39,16 @@ const RANK_STYLES = [
   { border: "border-bronze/40", bg: "bg-bronze/10", text: "text-bronze", label: "3rd", glow: "" },
 ];
 
-export default function Home() {
+export default async function Home() {
   const data = getPredictions();
   const top3 = data.predictions.slice(0, 3);
+
+  // Fetch live PL data (cached for 1 hour, falls back to hardcoded)
+  const [PL_TABLE, PLAYER_STATS, FIXTURE] = await Promise.all([
+    getStandings(),
+    getTopScorer(),
+    getNextFixture(),
+  ]);
 
   return (
     <main className="flex-1">
@@ -162,13 +150,13 @@ export default function Home() {
             <div data-aos="fade-right" data-aos-delay="200">
               {/* Match header */}
               <div className="bg-bg-card border border-border-custom rounded-xl overflow-hidden">
-                <div className="bg-gradient-to-r from-[#ef0107]/20 to-[#034694]/20 px-6 py-4 border-b border-border-custom">
+                <div style={{ background: `linear-gradient(to right, ${FIXTURE.homeColor}33, ${FIXTURE.awayColor}33)` }} className="px-6 py-4 border-b border-border-custom">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-text-secondary uppercase tracking-wider">
-                      Premier League — Matchweek 27 · Sun 1 Mar
+                      Premier League — Matchweek {FIXTURE.matchweek} · {FIXTURE.date}
                     </span>
                     <span className="text-xs text-prob-green font-semibold">
-                      UPCOMING
+                      {FIXTURE.status}
                     </span>
                   </div>
                 </div>
@@ -177,22 +165,22 @@ export default function Home() {
                 <div className="px-6 py-6">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[#ef0107]/20 flex items-center justify-center text-lg font-bold text-[#ef0107]">
-                        ARS
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold" style={{ backgroundColor: `${FIXTURE.homeColor}33`, color: FIXTURE.homeColor }}>
+                        {FIXTURE.homeAbbrev}
                       </div>
                       <div>
-                        <div className="font-bold text-text-primary">Arsenal</div>
+                        <div className="font-bold text-text-primary">{FIXTURE.homeTeam}</div>
                         <div className="text-xs text-text-secondary">Home</div>
                       </div>
                     </div>
                     <div className="text-2xl font-bold text-text-secondary">VS</div>
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <div className="font-bold text-text-primary">Chelsea</div>
+                        <div className="font-bold text-text-primary">{FIXTURE.awayTeam}</div>
                         <div className="text-xs text-text-secondary">Away</div>
                       </div>
-                      <div className="w-12 h-12 rounded-full bg-[#034694]/20 flex items-center justify-center text-lg font-bold text-[#034694]">
-                        CHE
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold" style={{ backgroundColor: `${FIXTURE.awayColor}33`, color: FIXTURE.awayColor }}>
+                        {FIXTURE.awayAbbrev}
                       </div>
                     </div>
                   </div>
@@ -200,9 +188,9 @@ export default function Home() {
                   {/* AI Prediction bar */}
                   <div className="bg-bg-primary rounded-lg p-4">
                     <div className="flex justify-between text-xs text-text-secondary mb-2">
-                      <span>Arsenal Win</span>
+                      <span>{FIXTURE.homeTeam} Win</span>
                       <span>Draw</span>
-                      <span>Chelsea Win</span>
+                      <span>{FIXTURE.awayTeam} Win</span>
                     </div>
                     <div className="flex h-2.5 rounded-full overflow-hidden gap-0.5">
                       <div className="bg-prob-green rounded-l-full" style={{ width: "55%" }} />
@@ -348,7 +336,7 @@ export default function Home() {
                 {/* Disclaimer */}
                 <div className="px-6 py-3 border-t border-border-custom">
                   <p className="text-[10px] text-text-secondary text-center">
-                    Standings as of Matchweek 26. Sign up for live match predictions.
+                    Standings as of Matchweek {PL_TABLE[0]?.p || "—"}. Sign up for live match predictions.
                   </p>
                 </div>
               </div>

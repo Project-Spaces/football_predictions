@@ -19,54 +19,56 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="max-w-[800px]">
-      <h1 className="text-2xl font-bold text-text-primary mb-1">
-        Welcome back, {session?.user?.name?.split(" ")[0] || "there"}
-      </h1>
-      <p className="text-text-secondary text-sm mb-8">
-        Here&apos;s your overview for today.
-      </p>
+    <div className="max-w-[1100px]">
+      <div data-aos="fade-up">
+        <h1 className="text-3xl font-bold text-text-primary mb-1">
+          Welcome back, {session?.user?.name?.split(" ")[0] || "there"}
+        </h1>
+        <p className="text-text-secondary text-sm mb-10">
+          Here&apos;s your overview for today.
+        </p>
+      </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8 max-sm:grid-cols-1">
-        <div className="bg-bg-card border border-border-custom rounded-lg p-5">
-          <div className="text-3xl font-bold text-text-primary">
+      <div className="grid grid-cols-3 gap-5 mb-10 max-sm:grid-cols-1" data-aos="fade-up" data-aos-delay="100">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
+          <div className="text-4xl font-bold text-text-primary">
             {data.total_predictions}
           </div>
-          <div className="text-sm text-text-secondary mt-1">
+          <div className="text-sm text-text-secondary mt-2">
             Total predictions
           </div>
         </div>
-        <div className="bg-bg-card border border-border-custom rounded-lg p-5">
-          <div className="text-3xl font-bold text-prob-green">{topProb}%</div>
-          <div className="text-sm text-text-secondary mt-1">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
+          <div className="text-4xl font-bold text-prob-green">{topProb}%</div>
+          <div className="text-sm text-text-secondary mt-2">
             Highest probability
           </div>
         </div>
-        <div className="bg-bg-card border border-border-custom rounded-lg p-5">
-          <div className="text-3xl font-bold text-accent">{verified}</div>
-          <div className="text-sm text-text-secondary mt-1">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
+          <div className="text-4xl font-bold text-accent">{verified}</div>
+          <div className="text-sm text-text-secondary mt-2">
             Fully verified
           </div>
         </div>
       </div>
 
       {/* Quick Links */}
-      <h2 className="text-lg font-semibold text-text-primary mb-4">
+      <h2 className="text-xl font-semibold text-text-primary mb-5" data-aos="fade-up" data-aos-delay="200">
         Quick Access
       </h2>
-      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+      <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1" data-aos="fade-up" data-aos-delay="300">
         {quickLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="bg-bg-card border border-border-custom rounded-lg p-5 hover:border-accent/40 transition-colors"
+            className="bg-bg-card border border-border-custom rounded-xl p-7 hover:border-accent/40 transition-all"
           >
-            <div className="text-2xl mb-2">{link.icon}</div>
-            <div className="font-semibold text-text-primary text-sm">
+            <div className="text-3xl mb-3">{link.icon}</div>
+            <div className="font-semibold text-text-primary">
               {link.label}
             </div>
-            <div className="text-xs text-text-secondary mt-1">{link.desc}</div>
+            <div className="text-sm text-text-secondary mt-1">{link.desc}</div>
           </Link>
         ))}
       </div>

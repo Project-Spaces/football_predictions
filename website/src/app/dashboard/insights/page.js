@@ -38,21 +38,23 @@ export default function InsightsPage() {
     .slice(0, 8);
 
   return (
-    <div className="max-w-[800px]">
-      <h1 className="text-2xl font-bold text-text-primary mb-1">
-        Trending Insights
-      </h1>
-      <p className="text-sm text-text-secondary mb-8">
-        Form streaks, top movers, and league breakdowns from today&apos;s data.
-      </p>
+    <div className="max-w-[1100px]">
+      <div data-aos="fade-up">
+        <h1 className="text-3xl font-bold text-text-primary mb-1">
+          Trending Insights
+        </h1>
+        <p className="text-sm text-text-secondary mb-10">
+          Form streaks, top movers, and league breakdowns from today&apos;s data.
+        </p>
+      </div>
 
-      <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
+      <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1" data-aos="fade-up" data-aos-delay="100">
         {/* Top Picks */}
-        <div className="bg-bg-card border border-border-custom rounded-lg p-5">
-          <h2 className="font-semibold text-text-primary mb-4">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
+          <h2 className="font-semibold text-text-primary text-lg mb-5">
             Highest Probability
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {topPicks.map((p) => (
               <div key={p.rank} className="flex items-center justify-between">
                 <div className="min-w-0">
@@ -72,11 +74,11 @@ export default function InsightsPage() {
         </div>
 
         {/* Best Form */}
-        <div className="bg-bg-card border border-border-custom rounded-lg p-5">
-          <h2 className="font-semibold text-text-primary mb-4">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
+          <h2 className="font-semibold text-text-primary text-lg mb-5">
             Best Form Streaks
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {byStreak.map((p) => (
               <div key={p.rank} className="flex items-center justify-between">
                 <div className="min-w-0">
@@ -97,15 +99,15 @@ export default function InsightsPage() {
       </div>
 
       {/* Countries */}
-      <div className="bg-bg-card border border-border-custom rounded-lg p-5 mt-6">
-        <h2 className="font-semibold text-text-primary mb-4">
+      <div className="bg-bg-card border border-border-custom rounded-xl p-7 mt-8" data-aos="fade-up" data-aos-delay="200">
+        <h2 className="font-semibold text-text-primary text-lg mb-5">
           Predictions by Country
         </h2>
-        <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+        <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
           {topCountries.map((c) => (
             <div
               key={c.country}
-              className="flex items-center justify-between py-2 border-b border-border-custom last:border-0"
+              className="flex items-center justify-between py-2.5 border-b border-border-custom last:border-0"
             >
               <span className="text-sm text-text-primary">{c.country}</span>
               <div className="text-xs text-text-secondary">
