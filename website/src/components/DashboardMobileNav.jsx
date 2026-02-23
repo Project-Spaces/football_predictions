@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import SettingsButton from "./SettingsButton";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: "⚡" },
@@ -42,7 +43,7 @@ export default function DashboardMobileNav() {
       </div>
 
       {/* User info row */}
-      <div className="flex items-center px-4 py-2.5 border-t border-border-custom">
+      <div className="flex items-center justify-between px-4 py-2.5 border-t border-border-custom">
         <div className="flex items-center gap-2 min-w-0">
           <div className="w-6 h-6 bg-accent/20 text-accent rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">
             {session?.user?.name?.[0]?.toUpperCase() || "U"}
@@ -54,6 +55,7 @@ export default function DashboardMobileNav() {
             )}
           </span>
         </div>
+        <SettingsButton variant="dashboard" />
       </div>
     </div>
   );
