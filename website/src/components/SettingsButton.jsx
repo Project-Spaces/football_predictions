@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
-import { signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 const THEME_OPTIONS = [
   { value: "light", label: "Light" },
@@ -22,8 +22,11 @@ export default function SettingsButton({ variant = "home" }) {
   const [open, setOpen] = useState(false);
   const [showTheme, setShowTheme] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
   const panelRef = useRef(null);
+
+  const initial = session?.user?.name?.[0]?.toUpperCase() || "P";
 
   useEffect(() => setMounted(true), []);
 
@@ -42,7 +45,7 @@ export default function SettingsButton({ variant = "home" }) {
   if (!mounted) return null;
 
   return (
-    <div className="fixed bottom-6 left-6 z-50" ref={panelRef}>
+    <div className={`z-50 ${variant === "home" ? "fixed bottom-6 left-6" : "relative inline-block"}`} ref={panelRef}>
       {/* Settings popover */}
       {open && (
         <div className="absolute bottom-14 left-0 w-56 bg-bg-card border border-border-custom rounded-xl shadow-lg overflow-hidden">
@@ -137,21 +140,18 @@ export default function SettingsButton({ variant = "home" }) {
         </div>
       )}
 
-      {/* Gear button */}
+      {/* Initial avatar button — Claude-style */}
       <button
         onClick={() => {
           setOpen(!open);
           setShowTheme(false);
         }}
-        className={`w-11 h-11 rounded-full border border-border-custom bg-bg-card shadow-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-accent/40 transition-all ${
-          open ? "border-accent/40 text-accent" : ""
+        className={`w-11 h-11 rounded-full bg-accent text-white text-base font-semibold flex items-center justify-center hover:opacity-90 transition-all ${
+          open ? "ring-2 ring-accent/40" : ""
         }`}
         aria-label="Settings"
       >
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="10" cy="10" r="3" />
-          <path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.5 3.5l1.4 1.4M15.1 15.1l1.4 1.4M3.5 16.5l1.4-1.4M15.1 4.9l1.4-1.4" />
-        </svg>
+        {initial}
       </button>
     </div>
   );

@@ -1,6 +1,5 @@
 import DashboardSidebar from "@/components/DashboardSidebar";
 import DashboardMobileNav from "@/components/DashboardMobileNav";
-import SettingsButton from "@/components/SettingsButton";
 
 export const metadata = {
   title: "Dashboard",
@@ -14,7 +13,6 @@ export default function DashboardLayout({ children }) {
         <DashboardMobileNav />
         <div className="flex-1 p-8 max-sm:p-4">{children}</div>
       </div>
-      <SettingsButton variant="dashboard" />
     </div>
   );
 }

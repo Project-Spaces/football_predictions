@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import SettingsButton from "./SettingsButton";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: "⚡" },
@@ -17,7 +18,7 @@ export default function DashboardSidebar() {
   const { data: session } = useSession();
 
   return (
-    <aside className="w-56 shrink-0 border-r border-border-custom bg-bg-primary min-h-[calc(100vh-64px)] max-lg:hidden flex flex-col">
+    <aside className="w-56 shrink-0 border-r border-border-custom bg-bg-primary sticky top-[64px] h-[calc(100vh-64px)] max-lg:hidden flex flex-col">
       <nav className="flex-1 py-4 px-3">
         <div className="space-y-1">
           {NAV_ITEMS.map((item) => {
@@ -46,6 +47,9 @@ export default function DashboardSidebar() {
         </div>
         <div className="text-xs text-text-secondary truncate">
           {session?.user?.email}
+        </div>
+        <div className="mt-3">
+          <SettingsButton variant="dashboard" />
         </div>
       </div>
     </aside>

@@ -3,7 +3,7 @@
 /* Register custom color tokens with Tailwind v4.
    Dark values are the defaults — Tailwind uses these for utility generation.
    Light overrides below use html.light for higher specificity. */
-@theme inline {
+@theme {
   --color-bg-primary: #0f1218;
   --color-bg-card: #1a1f2e;
   --color-bg-card-hover: #222840;
@@ -96,5 +96,10 @@ html.light .rank-1-glow {
 
 /* Light mode: stronger card borders and shadows for depth */
 html.light .bg-bg-card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Light mode: ensure sticky nav background is opaque enough */
+html.light nav {
+  --tw-bg-opacity: 0.97;
 }
