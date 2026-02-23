@@ -45,7 +45,7 @@ export default function SettingsButton({ variant = "home" }) {
   if (!mounted) return null;
 
   return (
-    <div className={`z-50 ${variant === "home" ? "fixed bottom-6 left-6" : "relative inline-block"}`} ref={panelRef}>
+    <div className="fixed bottom-6 left-6 z-50" ref={panelRef}>
       {/* Settings popover */}
       {open && (
         <div className="absolute bottom-14 left-0 w-56 bg-bg-card border border-border-custom rounded-xl shadow-lg overflow-hidden">

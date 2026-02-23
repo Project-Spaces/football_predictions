@@ -5,9 +5,12 @@ import SettingsButton from "./SettingsButton";
 
 export default function HomeSettings() {
   const pathname = usePathname();
+  const isDashboard = pathname.startsWith("/dashboard");
+  const variant = isDashboard ? "dashboard" : "home";
 
-  // Dashboard has its own settings in the sidebar
-  if (pathname.startsWith("/dashboard")) return null;
-
-  return <SettingsButton variant="home" />;
+  return (
+    <div className={isDashboard ? "lg:hidden" : ""}>
+      <SettingsButton variant={variant} />
+    </div>
+  );
 }
