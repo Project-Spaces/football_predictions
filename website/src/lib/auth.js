@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import db from "./db";
+import sql from "./db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -14,9 +14,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = db
-          .prepare("SELECT * FROM users WHERE email = ?")
-          .get(credentials.email);
+        const rows = await sql`
+          SELECT * FROM users WHERE email = ${credentials.email}
+        `;
+        const user = rows[0];
 
         if (!user) return null;
 

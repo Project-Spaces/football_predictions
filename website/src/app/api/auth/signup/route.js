@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import db from "@/lib/db";
+import sql, { initDb } from "@/lib/db";
 
 export async function POST(request) {
   try {
+    // Ensure users table exists
+    await initDb();
+
     const { name, email, password } = await request.json();
 
     if (!name || !email || !password) {
@@ -20,11 +23,11 @@ export async function POST(request) {
       );
     }
 
-    const existing = db
-      .prepare("SELECT id FROM users WHERE email = ?")
-      .get(email);
+    const existing = await sql`
+      SELECT id FROM users WHERE email = ${email}
+    `;
 
-    if (existing) {
+    if (existing.length > 0) {
       return NextResponse.json(
         { error: "An account with this email already exists" },
         { status: 409 }
@@ -33,9 +36,10 @@ export async function POST(request) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    db.prepare(
-      "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)"
-    ).run(name, email, passwordHash);
+    await sql`
+      INSERT INTO users (name, email, password_hash)
+      VALUES (${name}, ${email}, ${passwordHash})
+    `;
 
     return NextResponse.json({ message: "Account created successfully" });
   } catch (error) {
