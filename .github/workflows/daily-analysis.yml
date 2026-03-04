@@ -44,16 +44,24 @@ jobs:
           restore-keys: |
             fixture-stats-v1-
 
+      # Restore previous matched_predictions.csv as fallback if today's scraping fails
+      - name: Restore predictions cache (fallback)
+        uses: actions/cache@v4
+        with:
+          path: matched_predictions.csv
+          key: predictions-v1-${{ steps.date.outputs.date }}
+          restore-keys: |
+            predictions-v1-
+
       - name: Create .tmp directory
         run: mkdir -p .tmp
 
       # ── Step 1: Scrape SoccerVista ────────────────────────────────────────
       - name: Scrape SoccerVista predictions
-        continue-on-error: true  # if scraping fails, use yesterday's matched_predictions.csv
+        continue-on-error: true
         run: python3 tools/scrape_soccervista.py
 
       - name: Parse SoccerVista predictions
-        if: hashFiles('soccervista_raw.json') != ''
         continue-on-error: true
         run: python3 tools/parse_soccervista.py
 
@@ -63,7 +71,6 @@ jobs:
         run: python3 tools/scrape_sportybet.py
 
       - name: Parse SportyBet data
-        if: hashFiles('sportybet_raw.json') != ''
         continue-on-error: true
         run: python3 tools/parse_sportybet.py
 
@@ -72,14 +79,22 @@ jobs:
         continue-on-error: true
         run: python3 tools/match_games.py
 
-      # Abort if no predictions CSV was generated and none was cached
+      # Save today's CSV so it can be used as fallback tomorrow if scraping fails
+      - name: Save predictions cache
+        if: hashFiles('matched_predictions.csv') != ''
+        uses: actions/cache@v4
+        with:
+          path: matched_predictions.csv
+          key: predictions-v1-${{ steps.date.outputs.date }}
+
+      # Abort if no predictions CSV was generated and none was restored from cache
       - name: Check predictions CSV exists
         run: |
           if [ ! -f matched_predictions.csv ]; then
-            echo "::error::matched_predictions.csv not found — scraping pipeline failed and no cache available"
+            echo "::error::matched_predictions.csv not found — scraping failed and no cached fallback available"
             exit 1
           fi
-          echo "Predictions found: $(wc -l < matched_predictions.csv) rows"
+          echo "Predictions found: $(( $(wc -l < matched_predictions.csv) - 1 )) games"
 
       # ── Step 4: Fetch H2H stats + analyze markets ─────────────────────────
       - name: Run market analysis (top 5 predictions)
@@ -91,6 +106,7 @@ jobs:
 
       # Save updated fixture stats cache for future runs
       - name: Save fixture stats cache
+        if: always()
         uses: actions/cache@v4
         with:
           path: .tmp/fixture_stats_*.json
@@ -99,10 +115,11 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "### Pipeline complete" >> $GITHUB_STEP_SUMMARY
-          echo "Date: ${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+          echo "### Pipeline complete — ${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
           if [ -f matched_predictions.csv ]; then
-            echo "Predictions: $(wc -l < matched_predictions.csv) rows" >> $GITHUB_STEP_SUMMARY
+            echo "Predictions: $(( $(wc -l < matched_predictions.csv) - 1 )) games" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Predictions: none" >> $GITHUB_STEP_SUMMARY
           fi
           ANALYSES=$(ls .tmp/market_analysis_*.json 2>/dev/null | wc -l)
           echo "Market analyses generated: $ANALYSES" >> $GITHUB_STEP_SUMMARY
