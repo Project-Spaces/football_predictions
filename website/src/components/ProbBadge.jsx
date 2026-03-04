@@ -13,7 +13,7 @@ export default function ProbBadge({ probability }) {
 
   return (
     <div
-      className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-[15px] shrink-0 border-2 max-sm:w-12 max-sm:h-12 max-sm:text-[13px] ${colorClasses}`}
+      className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-base shrink-0 border-2 max-sm:w-13 max-sm:h-13 max-sm:text-sm ${colorClasses}`}
     >
       {probability}%
     </div>

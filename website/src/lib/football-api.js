@@ -249,3 +249,52 @@ export async function getNextFixture() {
     return FALLBACK_FIXTURE;
   }
 }
+
+// ─── 4. Live Results (today's matches across competitions) ───────────────────
+export async function getLiveResults() {
+  const cached = getCached("liveResults");
+  if (cached) return cached;
+
+  try {
+    // Fetch today's matches across all competitions
+    const today = new Date().toISOString().split("T")[0];
+    const data = await apiFetch(`/matches?dateFrom=${today}&dateTo=${today}`);
+
+    if (!data.matches || data.matches.length === 0) {
+      return [];
+    }
+
+    const results = data.matches.map((match) => {
+      const homeScore = match.score?.fullTime?.home;
+      const awayScore = match.score?.fullTime?.away;
+      const score =
+        homeScore !== null && awayScore !== null
+          ? `${homeScore}-${awayScore}`
+          : "";
+
+      // Determine winner for prediction matching
+      let winner = null;
+      if (match.status === "FINISHED" && homeScore !== null) {
+        if (homeScore > awayScore) {
+          winner = SHORT_NAMES[match.homeTeam.name] || match.homeTeam.name;
+        } else if (awayScore > homeScore) {
+          winner = SHORT_NAMES[match.awayTeam.name] || match.awayTeam.name;
+        }
+      }
+
+      return {
+        homeTeam: SHORT_NAMES[match.homeTeam.name] || match.homeTeam.name,
+        awayTeam: SHORT_NAMES[match.awayTeam.name] || match.awayTeam.name,
+        status: match.status, // SCHEDULED, IN_PLAY, PAUSED, FINISHED, etc.
+        score,
+        winner,
+      };
+    });
+
+    setCache("liveResults", results);
+    return results;
+  } catch (err) {
+    console.error("[football-api] Live results fetch failed:", err.message);
+    return [];
+  }
+}

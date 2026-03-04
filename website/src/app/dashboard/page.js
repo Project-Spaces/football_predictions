@@ -19,56 +19,56 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="max-w-[1400px]">
       <div data-aos="fade-up">
-        <h1 className="text-3xl font-bold text-text-primary mb-1">
+        <h1 className="text-4xl font-bold text-text-primary mb-2 max-sm:text-3xl">
           Welcome back, {session?.user?.name?.split(" ")[0] || "there"}
         </h1>
-        <p className="text-text-secondary text-sm mb-10">
+        <p className="text-text-secondary text-base mb-12 max-sm:text-sm max-sm:mb-8">
           Here&apos;s your overview for today.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-5 mb-10 max-sm:grid-cols-1" data-aos="fade-up" data-aos-delay="100">
-        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
-          <div className="text-4xl font-bold text-text-primary">
+      <div className="grid grid-cols-3 gap-6 mb-12 max-sm:grid-cols-1 max-sm:gap-4" data-aos="fade-up" data-aos-delay="100">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-8 hover:border-accent/40 transition-all">
+          <div className="text-5xl font-bold text-text-primary max-sm:text-4xl">
             {data.total_predictions}
           </div>
-          <div className="text-sm text-text-secondary mt-2">
+          <div className="text-base text-text-secondary mt-3 max-sm:text-sm">
             Total predictions
           </div>
         </div>
-        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
-          <div className="text-4xl font-bold text-prob-green">{topProb}%</div>
-          <div className="text-sm text-text-secondary mt-2">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-8 hover:border-accent/40 transition-all">
+          <div className="text-5xl font-bold text-prob-green max-sm:text-4xl">{topProb}%</div>
+          <div className="text-base text-text-secondary mt-3 max-sm:text-sm">
             Highest probability
           </div>
         </div>
-        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
-          <div className="text-4xl font-bold text-accent">{verified}</div>
-          <div className="text-sm text-text-secondary mt-2">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-8 hover:border-accent/40 transition-all">
+          <div className="text-5xl font-bold text-accent max-sm:text-4xl">{verified}</div>
+          <div className="text-base text-text-secondary mt-3 max-sm:text-sm">
             Fully verified
           </div>
         </div>
       </div>
 
       {/* Quick Links */}
-      <h2 className="text-xl font-semibold text-text-primary mb-5" data-aos="fade-up" data-aos-delay="200">
+      <h2 className="text-2xl font-bold text-text-primary mb-6 max-sm:text-xl" data-aos="fade-up" data-aos-delay="200">
         Quick Access
       </h2>
-      <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1" data-aos="fade-up" data-aos-delay="300">
+      <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1 max-sm:gap-4" data-aos="fade-up" data-aos-delay="300">
         {quickLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="bg-bg-card border border-border-custom rounded-xl p-7 hover:border-accent/40 transition-all"
+            className="bg-bg-card border border-border-custom rounded-xl p-8 hover:border-accent/40 transition-all"
           >
-            <div className="text-3xl mb-3">{link.icon}</div>
-            <div className="font-semibold text-text-primary">
+            <div className="text-4xl mb-4">{link.icon}</div>
+            <div className="text-lg font-bold text-text-primary">
               {link.label}
             </div>
-            <div className="text-sm text-text-secondary mt-1">{link.desc}</div>
+            <div className="text-base text-text-secondary mt-2 max-sm:text-sm">{link.desc}</div>
           </Link>
         ))}
       </div>

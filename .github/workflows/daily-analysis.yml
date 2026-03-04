@@ -1,0 +1,110 @@
+name: Daily Predictions & Market Analysis
+
+on:
+  schedule:
+    # 06:00 UTC daily — before most football matches start
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90  # full pipeline with rate-limited API calls can take ~60 min
+
+    env:
+      API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+      FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+      API_FOOTBALL_VIA_RAPIDAPI: "false"
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Get today's date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      # Restore cached fixture stats to stay within 100 req/day free API limit.
+      # Historical fixture stats are fetched once and never re-fetched.
+      - name: Restore fixture stats cache
+        uses: actions/cache@v4
+        with:
+          path: .tmp/fixture_stats_*.json
+          key: fixture-stats-v1-${{ steps.date.outputs.date }}
+          restore-keys: |
+            fixture-stats-v1-
+
+      - name: Create .tmp directory
+        run: mkdir -p .tmp
+
+      # ── Step 1: Scrape SoccerVista ────────────────────────────────────────
+      - name: Scrape SoccerVista predictions
+        continue-on-error: true  # if scraping fails, use yesterday's matched_predictions.csv
+        run: python3 tools/scrape_soccervista.py
+
+      - name: Parse SoccerVista predictions
+        if: hashFiles('soccervista_raw.json') != ''
+        continue-on-error: true
+        run: python3 tools/parse_soccervista.py
+
+      # ── Step 2: Scrape SportyBet ──────────────────────────────────────────
+      - name: Scrape SportyBet leagues
+        continue-on-error: true
+        run: python3 tools/scrape_sportybet.py
+
+      - name: Parse SportyBet data
+        if: hashFiles('sportybet_raw.json') != ''
+        continue-on-error: true
+        run: python3 tools/parse_sportybet.py
+
+      # ── Step 3: Cross-reference predictions with SportyBet ────────────────
+      - name: Match predictions with SportyBet
+        continue-on-error: true
+        run: python3 tools/match_games.py
+
+      # Abort if no predictions CSV was generated and none was cached
+      - name: Check predictions CSV exists
+        run: |
+          if [ ! -f matched_predictions.csv ]; then
+            echo "::error::matched_predictions.csv not found — scraping pipeline failed and no cache available"
+            exit 1
+          fi
+          echo "Predictions found: $(wc -l < matched_predictions.csv) rows"
+
+      # ── Step 4: Fetch H2H stats + analyze markets ─────────────────────────
+      - name: Run market analysis (top 5 predictions)
+        run: |
+          python3 tools/batch_analyze_predictions.py \
+            --top 5 \
+            --url ${{ secrets.VERCEL_URL }} \
+            --skip-existing
+
+      # Save updated fixture stats cache for future runs
+      - name: Save fixture stats cache
+        uses: actions/cache@v4
+        with:
+          path: .tmp/fixture_stats_*.json
+          key: fixture-stats-v1-${{ steps.date.outputs.date }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### Pipeline complete" >> $GITHUB_STEP_SUMMARY
+          echo "Date: ${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+          if [ -f matched_predictions.csv ]; then
+            echo "Predictions: $(wc -l < matched_predictions.csv) rows" >> $GITHUB_STEP_SUMMARY
+          fi
+          ANALYSES=$(ls .tmp/market_analysis_*.json 2>/dev/null | wc -l)
+          echo "Market analyses generated: $ANALYSES" >> $GITHUB_STEP_SUMMARY
+          FIXTURE_CACHE=$(ls .tmp/fixture_stats_*.json 2>/dev/null | wc -l)
+          echo "Fixture stats cached: $FIXTURE_CACHE files" >> $GITHUB_STEP_SUMMARY

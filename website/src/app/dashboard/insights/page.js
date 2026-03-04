@@ -1,4 +1,5 @@
 import { getPredictions } from "@/lib/predictions";
+import MarketHitRatesSection from "@/components/MarketHitRatesSection";
 
 export const metadata = {
   title: "Insights",
@@ -38,34 +39,34 @@ export default function InsightsPage() {
     .slice(0, 8);
 
   return (
-    <div className="max-w-[1100px]">
+    <div className="max-w-[1400px]">
       <div data-aos="fade-up">
-        <h1 className="text-3xl font-bold text-text-primary mb-1">
+        <h1 className="text-4xl font-bold text-text-primary mb-2 max-sm:text-3xl">
           Trending Insights
         </h1>
-        <p className="text-sm text-text-secondary mb-10">
+        <p className="text-base text-text-secondary mb-12 max-sm:text-sm max-sm:mb-8">
           Form streaks, top movers, and league breakdowns from today&apos;s data.
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1" data-aos="fade-up" data-aos-delay="100">
         {/* Top Picks */}
-        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
-          <h2 className="font-semibold text-text-primary text-lg mb-5">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-8 hover:border-accent/40 transition-all">
+          <h2 className="font-bold text-text-primary text-xl mb-6">
             Highest Probability
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {topPicks.map((p) => (
               <div key={p.rank} className="flex items-center justify-between">
                 <div className="min-w-0">
-                  <div className="text-sm text-text-primary font-medium truncate">
+                  <div className="text-base text-text-primary font-medium truncate">
                     {p.predicted_winner}
                   </div>
-                  <div className="text-xs text-text-secondary truncate">
+                  <div className="text-sm text-text-secondary truncate">
                     {p.league}
                   </div>
                 </div>
-                <span className="text-sm font-bold text-prob-green ml-3 shrink-0">
+                <span className="text-base font-bold text-prob-green ml-3 shrink-0">
                   {p.win_probability}%
                 </span>
               </div>
@@ -74,22 +75,22 @@ export default function InsightsPage() {
         </div>
 
         {/* Best Form */}
-        <div className="bg-bg-card border border-border-custom rounded-xl p-7">
-          <h2 className="font-semibold text-text-primary text-lg mb-5">
+        <div className="bg-bg-card border border-border-custom rounded-xl p-8 hover:border-accent/40 transition-all">
+          <h2 className="font-bold text-text-primary text-xl mb-6">
             Best Form Streaks
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {byStreak.map((p) => (
               <div key={p.rank} className="flex items-center justify-between">
                 <div className="min-w-0">
-                  <div className="text-sm text-text-primary font-medium truncate">
+                  <div className="text-base text-text-primary font-medium truncate">
                     {p.predicted_winner}
                   </div>
-                  <div className="text-xs text-text-secondary">
+                  <div className="text-sm text-text-secondary">
                     {p.winner_form}
                   </div>
                 </div>
-                <span className="text-sm font-bold text-accent ml-3 shrink-0">
+                <span className="text-base font-bold text-accent ml-3 shrink-0">
                   {p.wins}/5 W
                 </span>
               </div>
@@ -98,19 +99,22 @@ export default function InsightsPage() {
         </div>
       </div>
 
+      {/* Market Hit Rates */}
+      <MarketHitRatesSection />
+
       {/* Countries */}
-      <div className="bg-bg-card border border-border-custom rounded-xl p-7 mt-8" data-aos="fade-up" data-aos-delay="200">
-        <h2 className="font-semibold text-text-primary text-lg mb-5">
+      <div className="bg-bg-card border border-border-custom rounded-xl p-8 mt-8 hover:border-accent/40 transition-all" data-aos="fade-up" data-aos-delay="200">
+        <h2 className="font-bold text-text-primary text-xl mb-6">
           Predictions by Country
         </h2>
-        <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+        <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
           {topCountries.map((c) => (
             <div
               key={c.country}
-              className="flex items-center justify-between py-2.5 border-b border-border-custom last:border-0"
+              className="flex items-center justify-between py-3 border-b border-border-custom last:border-0"
             >
-              <span className="text-sm text-text-primary">{c.country}</span>
-              <div className="text-xs text-text-secondary">
+              <span className="text-base text-text-primary">{c.country}</span>
+              <div className="text-sm text-text-secondary">
                 {c.count} picks &middot; avg {c.avgProb}%
               </div>
             </div>
