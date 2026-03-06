@@ -122,6 +122,29 @@ export async function initMarketOutcomesTable() {
   `;
 }
 
+// Initialize daily_predictions table (all matched predictions, lightweight — no API calls)
+export async function initDailyPredictionsTable() {
+  const sql = getSQL();
+  await sql`
+    CREATE TABLE IF NOT EXISTS daily_predictions (
+      id SERIAL PRIMARY KEY,
+      match_date DATE NOT NULL,
+      home_team TEXT NOT NULL,
+      away_team TEXT NOT NULL,
+      league TEXT,
+      country TEXT,
+      win_probability NUMERIC(5,2),
+      match_type TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(home_team, away_team, match_date)
+    )
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_daily_predictions_date
+      ON daily_predictions(match_date DESC)
+  `;
+}
+
 export default function sql(strings, ...values) {
   return getSQL()(strings, ...values);
 }

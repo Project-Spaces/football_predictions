@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { getPredictions } from "@/lib/predictions";
 import Link from "next/link";
+import DailyPredictionsSection from "@/components/DailyPredictionsSection";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -72,6 +73,8 @@ export default async function DashboardPage() {
           </Link>
         ))}
       </div>
+
+      <DailyPredictionsSection />
     </div>
   );
 }

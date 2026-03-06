@@ -106,6 +106,8 @@ def main():
                         help="Analyze but don't upload to website")
     parser.add_argument("--skip-existing", action="store_true",
                         help="Skip games with an existing .tmp/market_analysis_*.json")
+    parser.add_argument("--upload-all", action="store_true",
+                        help="Upload all predictions (not just analyzed top-N) to /api/daily-predictions")
     args = parser.parse_args()
 
     if not API_KEY:
@@ -138,6 +140,35 @@ def main():
     # Sort by win probability descending (highest confidence first)
     if prob_col:
         df = df.sort_values(by=prob_col, ascending=False)
+
+    # Upload all predictions to /api/daily-predictions (lightweight, no API calls)
+    if args.upload_all and not args.dry_run:
+        match_type_col = col_map.get("match_type", None)
+        all_preds = []
+        for _, row in df.iterrows():
+            prob_val = row.get(prob_col) if prob_col else None
+            all_preds.append({
+                "home_team": str(row[home_col]).strip(),
+                "away_team": str(row[away_col]).strip(),
+                "league": str(row[league_col]).strip() if league_col and pd.notna(row.get(league_col)) else None,
+                "country": str(row[country_col]).strip() if country_col and pd.notna(row.get(country_col)) else None,
+                "win_probability": float(prob_val) if prob_val and str(prob_val) != "?" else None,
+                "match_type": str(row[match_type_col]).strip() if match_type_col and pd.notna(row.get(match_type_col)) else None,
+            })
+        try:
+            resp = requests.post(
+                f"{args.url}/api/daily-predictions",
+                json={"predictions": all_preds},
+                headers={"Content-Type": "application/json"},
+                timeout=30,
+            )
+            if resp.status_code in (200, 201):
+                result = resp.json()
+                print(f"Uploaded {result.get('inserted', '?')} predictions to /api/daily-predictions")
+            else:
+                print(f"Warning: daily-predictions upload failed: HTTP {resp.status_code} — {resp.text[:200]}")
+        except Exception as e:
+            print(f"Warning: daily-predictions upload error: {e}")
 
     # Apply --top N limit
     total_available = len(df)

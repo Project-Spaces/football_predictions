@@ -101,6 +101,7 @@ jobs:
         run: |
           python3 tools/batch_analyze_predictions.py \
             --top 5 \
+            --upload-all \
             --url ${{ secrets.VERCEL_URL }}
 
       # Save updated fixture stats cache for future runs
