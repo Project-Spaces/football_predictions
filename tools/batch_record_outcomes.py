@@ -91,7 +91,11 @@ def find_fixture_result(home_team_id: int, target_date: str) -> dict | None:
     Returns dict with: home_goals, away_goals, total_corners, total_cards, status
     Returns None if not found or not finished.
     """
-    data = api_get("fixtures", {"team": home_team_id, "date": target_date})
+    # Derive season from date (season = year, or year-1 if month <= 6 for mid-season leagues)
+    year = int(target_date[:4])
+    month = int(target_date[5:7])
+    season = year if month >= 7 else year - 1
+    data = api_get("fixtures", {"team": home_team_id, "date": target_date, "season": season})
     fixtures = data.get("response", [])
 
     for fix in fixtures:
