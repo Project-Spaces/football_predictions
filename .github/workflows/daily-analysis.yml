@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90  # full pipeline with rate-limited API calls can take ~60 min
 
+    permissions:
+      contents: write  # needed to commit predictions.json back to repo
+
     env:
       API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
       FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
@@ -95,6 +98,22 @@ jobs:
             exit 1
           fi
           echo "Predictions found: $(( $(wc -l < matched_predictions.csv) - 1 )) games"
+
+      # ── Step 3b: Regenerate predictions.json and commit to trigger Vercel deploy ──
+      - name: Generate predictions.json
+        run: python3 tools/csv_to_json.py matched_predictions.csv website/public/data/predictions.json
+
+      - name: Commit and push updated predictions.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add website/public/data/predictions.json
+          if git diff --cached --quiet; then
+            echo "No changes to predictions.json — skipping commit"
+          else
+            git commit -m "chore: update predictions.json [skip ci]"
+            git push
+          fi
 
       # ── Step 4: Fetch H2H stats + analyze markets ─────────────────────────
       - name: Run market analysis (top 5 predictions)
