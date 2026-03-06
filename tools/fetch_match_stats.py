@@ -83,8 +83,15 @@ def find_team_id(name: str, league_id: int = None, season: int = None) -> tuple[
             params["league"] = league_id
         if with_league and season:
             params["season"] = season
-        data = api_get("teams", params)
-        return data.get("response", [])
+        try:
+            data = api_get("teams", params)
+            return data.get("response", [])
+        except ValueError as e:
+            # API requires league param when searching by name on free tier;
+            # if we don't have a valid league_id, treat as not found.
+            if "league" in str(e).lower():
+                return []
+            raise
 
     # Build ordered list of name variants to try
     variants = [name]
@@ -98,6 +105,11 @@ def find_team_id(name: str, league_id: int = None, season: int = None) -> tuple[
     prefix_stripped = re.sub(r"^(OC|FC|SC|AC|RC|FK|SK|AS|US|SS|CD|CF|AFC|RFC)\s+", "", name, flags=re.IGNORECASE).strip()
     if prefix_stripped != name and prefix_stripped not in variants:
         variants.append(prefix_stripped)
+    # Add first-word-only variant: "Bayern Munich" → "Bayern", "Daring Brussels U21" → "Daring"
+    # Helps when the API name uses a different city/language (e.g. "FC Bayern München")
+    first_word = name.split()[0]
+    if first_word not in variants and len(first_word) > 4:
+        variants.append(first_word)
 
     teams = []
     for variant in variants:
