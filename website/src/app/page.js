@@ -55,17 +55,17 @@ export default async function Home() {
 
   return (
     <main className="flex-1">
-      {/* Hero — full viewport, bold, Outlier-style */}
-      <section className="relative min-h-[85vh] flex items-center justify-center px-4 overflow-hidden">
-        {/* Background image */}
+      {/* Group 1: fansimage — Hero → PL Spotlight → Today's Top Picks */}
+      <div className="relative overflow-hidden">
         <Image src={fansImage} alt="" fill className="object-cover" priority />
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-bg-primary/75" />
-        {/* Grid pattern on top */}
         <div className="absolute inset-0 hero-grid-bg opacity-40" />
-        {/* Glow orbs */}
-        <div className="absolute z-10 top-1/2 left-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] hero-glow-orb pointer-events-none" />
-        <div className="absolute z-10 top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-purple-500/10 blur-[100px] hero-glow-orb-2 pointer-events-none" />
+
+        {/* Hero — full viewport, bold, Outlier-style */}
+        <section className="relative min-h-[85vh] flex items-center justify-center px-4">
+          {/* Glow orbs */}
+          <div className="absolute z-10 top-1/2 left-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] hero-glow-orb pointer-events-none" />
+          <div className="absolute z-10 top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-purple-500/10 blur-[100px] hero-glow-orb-2 pointer-events-none" />
 
         <div className="relative z-20 max-w-[1100px] mx-auto text-center">
           <div data-aos="fade-down" data-aos-duration="600">
@@ -140,10 +140,10 @@ export default async function Home() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Premier League Featured Match Visualization */}
-      <section className="px-4 py-20 border-t border-border-custom" data-aos="fade-up">
+        {/* Premier League Featured Match Visualization */}
+        <section className="relative z-10 px-4 py-20 border-t border-border-custom" data-aos="fade-up">
         <div className="max-w-[1100px] mx-auto">
           <div className="text-center mb-10" data-aos="fade-up">
             <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase text-prob-green border border-prob-green/30 rounded-full mb-4 bg-prob-green/5">
@@ -352,10 +352,10 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Today's Top Picks — Enhanced */}
-      <section id="preview" className="px-4 py-20 relative">
+        {/* Today's Top Picks — Enhanced */}
+        <section id="preview" className="relative z-10 px-4 py-20">
         {/* Gradient top accent */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
 
@@ -416,10 +416,17 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </div>
+      {/* END Group 1 */}
 
-      {/* Features */}
-      <section className="px-4 py-20 border-t border-border-custom">
+      {/* Group 2: secondimage — Features → How It Works → CTA Banner */}
+      <div className="relative overflow-hidden">
+        <Image src={secondImage} alt="" fill className="object-cover" />
+        <div className="absolute inset-0 bg-bg-primary/82" />
+
+        {/* Features */}
+        <section className="relative z-10 px-4 py-20 border-t border-border-custom">
         <div className="max-w-[1100px] mx-auto">
           <div data-aos="fade-up">
             <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-text-primary text-center mb-3">
@@ -453,13 +460,9 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="relative px-4 py-20 border-t border-border-custom overflow-hidden">
-        {/* Background image */}
-        <Image src={secondImage} alt="" fill className="object-cover" />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-bg-primary/82" />
-        <div className="relative z-10 max-w-[1100px] mx-auto">
+        {/* How It Works */}
+        <section className="relative z-10 px-4 py-20 border-t border-border-custom">
+        <div className="max-w-[1100px] mx-auto">
           <h2
             data-aos="fade-up"
             className="font-[family-name:var(--font-display)] text-3xl font-bold text-text-primary text-center mb-12"
@@ -503,10 +506,10 @@ export default async function Home() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* CTA Banner */}
-      <section className="px-4 py-20 border-t border-border-custom">
+        {/* CTA Banner */}
+        <section className="relative z-10 px-4 py-20 border-t border-border-custom">
         <div
           data-aos="fade-up"
           className="max-w-[1100px] mx-auto text-center bg-gradient-to-br from-bg-card to-bg-card-hover border border-border-custom rounded-2xl py-16 px-8 relative overflow-hidden"
@@ -530,7 +533,9 @@ export default async function Home() {
             </Link>
           </div>
         </div>
-      </section>
+        </section>
+      </div>
+      {/* END Group 2 */}
     </main>
   );
 }
