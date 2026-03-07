@@ -1,7 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getPredictions } from "@/lib/predictions";
 import PredictionCard from "@/components/PredictionCard";
 import { getStandings, getTopScorer, getNextFixture } from "@/lib/football-api";
+import fansImage from "./fansimage.jpg";
+import secondImage from "./secondimage.webp";
 
 const FEATURES = [
   {
@@ -53,12 +56,18 @@ export default async function Home() {
   return (
     <main className="flex-1">
       {/* Hero — full viewport, bold, Outlier-style */}
-      <section className="relative min-h-[85vh] flex items-center justify-center px-4 overflow-hidden hero-grid-bg">
+      <section className="relative min-h-[85vh] flex items-center justify-center px-4 overflow-hidden">
+        {/* Background image */}
+        <Image src={fansImage} alt="" fill className="object-cover" priority />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-bg-primary/75" />
+        {/* Grid pattern on top */}
+        <div className="absolute inset-0 hero-grid-bg opacity-40" />
         {/* Glow orbs */}
-        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] hero-glow-orb pointer-events-none" />
-        <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-purple-500/10 blur-[100px] hero-glow-orb-2 pointer-events-none" />
+        <div className="absolute z-10 top-1/2 left-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] hero-glow-orb pointer-events-none" />
+        <div className="absolute z-10 top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-purple-500/10 blur-[100px] hero-glow-orb-2 pointer-events-none" />
 
-        <div className="relative z-10 max-w-[1100px] mx-auto text-center">
+        <div className="relative z-20 max-w-[1100px] mx-auto text-center">
           <div data-aos="fade-down" data-aos-duration="600">
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-widest uppercase text-accent border border-accent/30 rounded-full mb-8 bg-accent/5">
               AI-Powered Football Predictions
@@ -68,7 +77,7 @@ export default async function Home() {
           <h1
             data-aos="fade-up"
             data-aos-duration="800"
-            className="text-7xl font-extrabold text-text-primary mb-6 leading-[1.1] tracking-tight max-lg:text-5xl max-sm:text-4xl"
+            className="font-[family-name:var(--font-display)] text-7xl font-extrabold text-text-primary mb-6 leading-[1.1] tracking-tight max-lg:text-5xl max-sm:text-4xl"
           >
             Analyze Trends.
             <br />
@@ -140,7 +149,7 @@ export default async function Home() {
             <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase text-prob-green border border-prob-green/30 rounded-full mb-4 bg-prob-green/5">
               Featured Match Preview
             </span>
-            <h2 className="text-3xl font-bold text-text-primary max-sm:text-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-text-primary max-sm:text-2xl">
               Premier League Spotlight
             </h2>
           </div>
@@ -353,7 +362,7 @@ export default async function Home() {
         <div className="max-w-[1100px] mx-auto">
           <div className="flex items-center justify-between mb-8" data-aos="fade-up">
             <div className="flex items-center gap-3">
-              <h2 className="text-3xl font-bold text-text-primary max-sm:text-2xl">
+              <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-text-primary max-sm:text-2xl">
                 Today&apos;s Top Picks
               </h2>
               <span className="px-2.5 py-1 text-xs font-bold bg-prob-green/20 text-prob-green rounded-full border border-prob-green/30 uppercase tracking-wider">
@@ -413,7 +422,7 @@ export default async function Home() {
       <section className="px-4 py-20 border-t border-border-custom">
         <div className="max-w-[1100px] mx-auto">
           <div data-aos="fade-up">
-            <h2 className="text-3xl font-bold text-text-primary text-center mb-3">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-text-primary text-center mb-3">
               Everything You Need to Win
             </h2>
             <p className="text-text-secondary text-center mb-12 max-w-xl mx-auto">
@@ -445,11 +454,15 @@ export default async function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="px-4 py-20 border-t border-border-custom">
-        <div className="max-w-[1100px] mx-auto">
+      <section className="relative px-4 py-20 border-t border-border-custom overflow-hidden">
+        {/* Background image */}
+        <Image src={secondImage} alt="" fill className="object-cover" />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-bg-primary/82" />
+        <div className="relative z-10 max-w-[1100px] mx-auto">
           <h2
             data-aos="fade-up"
-            className="text-3xl font-bold text-text-primary text-center mb-12"
+            className="font-[family-name:var(--font-display)] text-3xl font-bold text-text-primary text-center mb-12"
           >
             How It Works
           </h2>
@@ -502,7 +515,7 @@ export default async function Home() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-accent/10 rounded-full blur-[80px] pointer-events-none" />
 
           <div className="relative z-10">
-            <h2 className="text-4xl font-bold text-text-primary mb-4 max-sm:text-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-4xl font-bold text-text-primary mb-4 max-sm:text-2xl">
               Ready to start winning?
             </h2>
             <p className="text-text-secondary mb-8 max-w-lg mx-auto text-lg">
