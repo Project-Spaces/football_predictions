@@ -11,6 +11,11 @@ export const metadata = {
   },
   description:
     "High-probability football predictions verified on SportyBet. Daily match analysis for informed betting.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
