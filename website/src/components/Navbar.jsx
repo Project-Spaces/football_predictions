@@ -21,7 +21,7 @@ export default function Navbar() {
           href="/"
           className="text-2xl font-bold text-accent tracking-tight"
         >
-          Pindexa
+          Maigation
         </Link>
 
         {/* Desktop nav */}

@@ -6,8 +6,8 @@ import HomeSettings from "@/components/HomeSettings";
 
 export const metadata = {
   title: {
-    template: "%s | Pindexa",
-    default: "Pindexa - Football Predictions",
+    template: "%s | Maigation",
+    default: "Maigation - Football Predictions",
   },
   description:
     "High-probability football predictions verified on SportyBet. Daily match analysis for informed betting.",

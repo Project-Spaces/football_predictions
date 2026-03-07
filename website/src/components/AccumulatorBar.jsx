@@ -18,7 +18,7 @@ export default function AccumulatorBar({ picks, onClear }) {
       (p, i) =>
         `${i + 1}. ${p.predicted_winner} (${p.predicted_side}) — ${p.home_team} vs ${p.away_team} [${p.win_probability}%]`
     );
-    const text = `🎯 Pindexa Accumulator (${picks.length} picks)\n${"─".repeat(40)}\n${lines.join("\n")}\n${"─".repeat(40)}\nCombined Probability: ${combinedPct}%`;
+    const text = `🎯 Maigation Accumulator (${picks.length} picks)\n${"─".repeat(40)}\n${lines.join("\n")}\n${"─".repeat(40)}\nCombined Probability: ${combinedPct}%`;
 
     try {
       await navigator.clipboard.writeText(text);

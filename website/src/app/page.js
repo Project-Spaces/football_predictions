@@ -506,7 +506,7 @@ export default async function Home() {
               Ready to start winning?
             </h2>
             <p className="text-text-secondary mb-8 max-w-lg mx-auto text-lg">
-              Join Pindexa and get instant access to today&apos;s highest-probability
+              Join Maigation and get instant access to today&apos;s highest-probability
               predictions.
             </p>
             <Link

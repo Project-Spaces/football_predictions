@@ -7,7 +7,7 @@ export default function Footer() {
           informational purposes only. Please gamble responsibly. 18+
         </p>
         <p className="text-xs text-text-secondary mt-2 opacity-60">
-          &copy; 2026 Pindexa
+          &copy; 2026 Maigation
         </p>
       </div>
     </footer>

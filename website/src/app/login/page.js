@@ -40,7 +40,7 @@ export default function LoginPage() {
           Welcome back
         </h1>
         <p className="text-text-secondary text-center mb-8">
-          Sign in to your Pindexa account
+          Sign in to your Maigation account
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
