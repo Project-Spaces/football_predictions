@@ -2,8 +2,8 @@ name: Daily Predictions & Market Analysis
 
 on:
   schedule:
-    # 02:00 UTC daily — 9 PM CT (CDT), early enough to capture next day's fixtures
-    - cron: '0 2 * * *'
+    # 23:00 UTC daily — 6 PM EST, early enough to capture next day's fixtures
+    - cron: '0 23 * * *'
   workflow_dispatch:
     # Allow manual trigger from GitHub Actions tab
 

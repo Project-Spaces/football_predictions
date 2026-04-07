@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
+function utcToEst(timeStr) {
+  const [h, m] = timeStr.split(":").map(Number);
+  const estH = ((h - 5) + 24) % 24;
+  return `${String(estH).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
 import ProbBadge from "./ProbBadge";
 import FormDots from "./FormDots";
 import MatchAnalysisPanel from "./MatchAnalysisPanel";
@@ -76,12 +82,12 @@ export default function PredictionCard({
                     ? `LIVE ${liveData.score}`
                     : liveData.status === "FINISHED"
                       ? `FT ${liveData.score}`
-                      : p.kickoff_utc + " UTC"}
+                      : utcToEst(p.kickoff_utc) + " EST"}
                 </span>
               )}
               {!liveData && (
                 <div className="text-base font-semibold text-text-primary">
-                  {p.kickoff_utc} UTC
+                  {utcToEst(p.kickoff_utc)} EST
                 </div>
               )}
             </div>
