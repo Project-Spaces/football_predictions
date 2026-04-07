@@ -129,6 +129,7 @@ export default function PredictionList({ data }) {
       onToggle={togglePick}
       isSelected={isSelected(p.rank)}
       liveData={getLiveData(p)}
+      predictionDate={data.date}
     />
   );
 

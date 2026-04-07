@@ -2,8 +2,8 @@ name: Daily Predictions & Market Analysis
 
 on:
   schedule:
-    # 06:00 UTC daily — before most football matches start
-    - cron: '0 6 * * *'
+    # 02:00 UTC daily — 9 PM CT (CDT), early enough to capture next day's fixtures
+    - cron: '0 2 * * *'
   workflow_dispatch:
     # Allow manual trigger from GitHub Actions tab
 
@@ -47,11 +47,11 @@ jobs:
           restore-keys: |
             fixture-stats-v1-
 
-      # Restore previous matched_predictions.csv as fallback if today's scraping fails
+      # Restore previous predictions as fallback if today's scraping fails
       - name: Restore predictions cache (fallback)
         uses: actions/cache@v4
         with:
-          path: matched_predictions.csv
+          path: .tmp/soccervista_predictions.xlsx
           key: predictions-v1-${{ steps.date.outputs.date }}
           restore-keys: |
             predictions-v1-
@@ -59,7 +59,7 @@ jobs:
       - name: Create .tmp directory
         run: mkdir -p .tmp
 
-      # ── Step 1: Scrape SoccerVista ────────────────────────────────────────
+      # ── Step 1: Scrape & parse SoccerVista ───────────────────────────────────
       - name: Scrape SoccerVista predictions
         continue-on-error: true
         run: python3 tools/scrape_soccervista.py
@@ -68,40 +68,26 @@ jobs:
         continue-on-error: true
         run: python3 tools/parse_soccervista.py
 
-      # ── Step 2: Scrape SportyBet ──────────────────────────────────────────
-      - name: Scrape SportyBet leagues
-        continue-on-error: true
-        run: python3 tools/scrape_sportybet.py
-
-      - name: Parse SportyBet data
-        continue-on-error: true
-        run: python3 tools/parse_sportybet.py
-
-      # ── Step 3: Cross-reference predictions with SportyBet ────────────────
-      - name: Match predictions with SportyBet
-        continue-on-error: true
-        run: python3 tools/match_games.py
-
-      # Save today's CSV so it can be used as fallback tomorrow if scraping fails
+      # Save today's predictions so they can be used as fallback tomorrow
       - name: Save predictions cache
-        if: hashFiles('matched_predictions.csv') != ''
+        if: hashFiles('.tmp/soccervista_predictions.xlsx') != ''
         uses: actions/cache@v4
         with:
-          path: matched_predictions.csv
+          path: .tmp/soccervista_predictions.xlsx
           key: predictions-v1-${{ steps.date.outputs.date }}
 
-      # Abort if no predictions CSV was generated and none was restored from cache
-      - name: Check predictions CSV exists
+      # Abort if no predictions were generated and none restored from cache
+      - name: Check predictions exist
         run: |
-          if [ ! -f matched_predictions.csv ]; then
-            echo "::error::matched_predictions.csv not found — scraping failed and no cached fallback available"
+          if [ ! -f .tmp/soccervista_predictions.xlsx ]; then
+            echo "::error::soccervista_predictions.xlsx not found — scraping failed and no cached fallback available"
             exit 1
           fi
-          echo "Predictions found: $(( $(wc -l < matched_predictions.csv) - 1 )) games"
+          echo "Predictions file found"
 
-      # ── Step 3b: Regenerate predictions.json and commit to trigger Vercel deploy ──
+      # ── Step 2: Regenerate predictions.json and commit to trigger Vercel deploy ──
       - name: Generate predictions.json
-        run: python3 tools/csv_to_json.py matched_predictions.csv website/public/data/predictions.json
+        run: python3 tools/csv_to_json.py
 
       - name: Commit and push updated predictions.json
         run: |
@@ -115,7 +101,7 @@ jobs:
             git push
           fi
 
-      # ── Step 4: Fetch H2H stats + analyze markets ─────────────────────────
+      # ── Step 3: Fetch H2H stats + analyze markets ─────────────────────────
       - name: Run market analysis (top 5 predictions)
         run: |
           python3 tools/batch_analyze_predictions.py \
@@ -135,10 +121,10 @@ jobs:
         if: always()
         run: |
           echo "### Pipeline complete — ${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
-          if [ -f matched_predictions.csv ]; then
-            echo "Predictions: $(( $(wc -l < matched_predictions.csv) - 1 )) games" >> $GITHUB_STEP_SUMMARY
+          if [ -f .tmp/soccervista_predictions.xlsx ]; then
+            echo "Predictions file: present" >> $GITHUB_STEP_SUMMARY
           else
-            echo "Predictions: none" >> $GITHUB_STEP_SUMMARY
+            echo "Predictions file: missing" >> $GITHUB_STEP_SUMMARY
           fi
           ANALYSES=$(ls .tmp/market_analysis_*.json 2>/dev/null | wc -l)
           echo "Market analyses generated: $ANALYSES" >> $GITHUB_STEP_SUMMARY

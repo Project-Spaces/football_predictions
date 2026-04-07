@@ -11,6 +11,7 @@ export default function PredictionCard({
   isSelected,
   liveData,
   voteButtons,
+  predictionDate,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
@@ -85,7 +86,11 @@ export default function PredictionCard({
               )}
             </div>
             {!liveData && (
-              <div className="text-xs text-text-secondary mt-0.5">Kickoff</div>
+              <div className="text-xs text-text-secondary mt-0.5">
+                {predictionDate
+                  ? new Date(predictionDate + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" })
+                  : "Kickoff"}
+              </div>
             )}
           </div>
 
