@@ -134,7 +134,6 @@ export async function initDailyPredictionsTable() {
       league TEXT,
       country TEXT,
       win_probability NUMERIC(5,2),
-      match_type TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW(),
       UNIQUE(home_team, away_team, match_date)
     )

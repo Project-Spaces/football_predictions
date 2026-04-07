@@ -1,5 +1,5 @@
 """
-Convert matched_predictions.csv to predictions.json for the website.
+Convert soccervista_predictions.xlsx to predictions.json for the website.
 Bridge between the prediction pipeline output and the WebPage frontend.
 """
 
@@ -11,15 +11,17 @@ from datetime import datetime, timezone
 import pandas as pd
 
 
-def csv_to_json(csv_path, output_path):
-    """Convert matched predictions CSV to web-ready JSON."""
-    df = pd.read_csv(csv_path)
+def csv_to_json(input_path, output_path):
+    """Convert SoccerVista predictions to web-ready JSON."""
+    if input_path.endswith('.xlsx'):
+        df = pd.read_excel(input_path)
+    else:
+        df = pd.read_csv(input_path)
 
     predictions = []
-    for _, row in df.iterrows():
-        match_type = str(row.get('Match Type', ''))
+    for i, (_, row) in enumerate(df.iterrows(), start=1):
         predictions.append({
-            'rank': int(row['Rank']),
+            'rank': int(row['Rank']) if 'Rank' in row and pd.notna(row['Rank']) else i,
             'country': row['Country'],
             'league': row['League'],
             'kickoff_utc': row['Kickoff (UTC)'],
@@ -30,9 +32,6 @@ def csv_to_json(csv_path, output_path):
             'winner_form': row.get('Winner Form (Last 5)', ''),
             'opponent_form': row.get('Opponent Form (Last 5)', ''),
             'win_probability': round(float(row['Win Probability %']), 1),
-            'sportybet_league': row.get('SportyBet League', ''),
-            'match_type': match_type,
-            'verified': match_type.startswith('Full'),
         })
 
     data = {
@@ -51,14 +50,14 @@ def csv_to_json(csv_path, output_path):
 
 
 def main():
-    csv_path = sys.argv[1] if len(sys.argv) > 1 else 'matched_predictions.csv'
+    input_path = sys.argv[1] if len(sys.argv) > 1 else '.tmp/soccervista_predictions.xlsx'
     output_path = sys.argv[2] if len(sys.argv) > 2 else 'website/public/data/predictions.json'
 
-    if not os.path.exists(csv_path):
-        print(f"Error: {csv_path} not found. Run the prediction pipeline first.")
+    if not os.path.exists(input_path):
+        print(f"Error: {input_path} not found. Run scrape_soccervista.py and parse_soccervista.py first.")
         sys.exit(1)
 
-    csv_to_json(csv_path, output_path)
+    csv_to_json(input_path, output_path)
 
 
 if __name__ == "__main__":

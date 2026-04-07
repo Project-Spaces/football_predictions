@@ -35,7 +35,7 @@ export async function GET(request) {
 }
 
 // POST /api/daily-predictions — bulk upsert (called by batch_analyze_predictions.py)
-// Body: { predictions: [{ home_team, away_team, league, country, win_probability, match_type }] }
+// Body: { predictions: [{ home_team, away_team, league, country, win_probability }] }
 export async function POST(request) {
   try {
     await initDailyPredictionsTable();
@@ -53,17 +53,16 @@ export async function POST(request) {
     for (const p of predictions) {
       await sql`
         INSERT INTO daily_predictions
-          (match_date, home_team, away_team, league, country, win_probability, match_type)
+          (match_date, home_team, away_team, league, country, win_probability)
         VALUES
           (${date}, ${p.home_team}, ${p.away_team},
            ${p.league || null}, ${p.country || null},
-           ${p.win_probability ?? null}, ${p.match_type || null})
+           ${p.win_probability ?? null})
         ON CONFLICT (home_team, away_team, match_date)
         DO UPDATE SET
           league = EXCLUDED.league,
           country = EXCLUDED.country,
           win_probability = EXCLUDED.win_probability,
-          match_type = EXCLUDED.match_type,
           created_at = NOW()
       `;
       inserted++;

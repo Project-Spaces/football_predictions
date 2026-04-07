@@ -87,15 +87,6 @@ export default function PredictionCard({
             {!liveData && (
               <div className="text-xs text-text-secondary mt-0.5">Kickoff</div>
             )}
-            <span
-              className={`inline-block text-xs px-2.5 py-1 rounded-lg mt-2 ${
-                p.verified
-                  ? "bg-prob-green/15 text-prob-green"
-                  : "bg-prob-yellow/10 text-prob-yellow"
-              }`}
-            >
-              {p.verified ? "Verified" : "League Match"}
-            </span>
           </div>
 
           {/* Accumulator toggle */}
@@ -137,20 +128,8 @@ export default function PredictionCard({
           </div>
 
           <div className="flex flex-wrap gap-2.5 pt-1">
-            <span
-              className={`text-xs px-3 py-1.5 rounded-full ${
-                p.verified
-                  ? "bg-prob-green/15 text-prob-green"
-                  : "bg-bg-primary text-text-secondary"
-              }`}
-            >
-              {p.match_type}
-            </span>
             <span className="text-xs px-3 py-1.5 rounded-full bg-accent/10 text-accent">
               {p.predicted_side} Win
-            </span>
-            <span className="text-xs px-3 py-1.5 rounded-full bg-bg-primary text-text-secondary">
-              {p.sportybet_league}
             </span>
           </div>
 

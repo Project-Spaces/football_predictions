@@ -66,24 +66,15 @@ credentials.json, token.json  # Google OAuth (gitignored)
 
 **Core principle:** Local files are just for processing. Anything I need to see or use lives in cloud services. Everything in `.tmp/` is disposable.
 
-## SportyBet Cross-Reference Pipeline
+## Prediction Pipeline
 
-The prediction pipeline has two phases:
+Single-phase pipeline: SoccerVista → parse → website.
 
-**Phase 1: Prediction Generation**
-- Scrape SoccerVista → Parse → Filter 60%+ win probability
-- Tools: `scrape_soccervista.py`, `parse_soccervista.py`
-
-**Phase 2: Availability Validation**
-- Scrape SportyBet → Parse sidebar leagues (384+) and match details → Fuzzy-match against predictions → Final output
-- Tools: `scrape_sportybet.py`, `parse_sportybet.py`, `match_games.py`
-
-**Key details:**
-- SportyBet target: `sportybet.com/ng` (Nigeria)
-- Dependencies: `thefuzz`, `python-Levenshtein`, `pandas`, `openpyxl`, `firecrawl`
+- Scrape SoccerVista → Parse → Filter 60%+ win probability → Convert to JSON
+- Tools: `scrape_soccervista.py`, `parse_soccervista.py`, `csv_to_json.py`
+- Dependencies: `pandas`, `openpyxl`, `firecrawl`
 - Workflow SOP: `workflows/sportybet_predictions.md`
-- Output: `matched_predictions.xlsx` / `.csv`
-- Two match types: "Full" (league + team verified) and "League only" (needs manual team check on SportyBet)
+- Output: `.tmp/soccervista_predictions.xlsx` → `website/public/data/predictions.json`
 
 ## Bottom Line
 

@@ -93,7 +93,7 @@ export default async function Home() {
             className="text-xl text-text-secondary max-w-2xl mx-auto mb-12 leading-relaxed max-sm:text-base"
           >
             AI-powered football predictions across 20+ countries. Every pick
-            ranked by win probability and verified on SportyBet Nigeria.
+            ranked by win probability, sourced from SoccerVista daily.
           </p>
 
           <div

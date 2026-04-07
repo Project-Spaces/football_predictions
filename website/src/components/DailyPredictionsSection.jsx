@@ -2,21 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-function MatchTypeBadge({ type }) {
-  if (!type) return null;
-  const isFull = type.toLowerCase().includes("full");
-  return (
-    <span
-      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-        isFull
-          ? "bg-green-500/15 text-green-400 border border-green-500/30"
-          : "bg-yellow-500/15 text-yellow-400 border border-yellow-500/30"
-      }`}
-    >
-      {isFull ? "Verified" : "Check SportyBet"}
-    </span>
-  );
-}
 
 function ProbBadge({ prob }) {
   if (prob == null) return null;
@@ -48,9 +33,6 @@ export default function DailyPredictionsSection() {
   if (predictions.length === 0) return null;
 
   const visible = expanded ? predictions : predictions.slice(0, 8);
-  const analyzedCount = predictions.filter((p) =>
-    p.match_type?.toLowerCase().includes("full")
-  ).length;
 
   return (
     <div className="mt-12" data-aos="fade-up" data-aos-delay="400">
@@ -60,8 +42,7 @@ export default function DailyPredictionsSection() {
             Today&apos;s Predictions
           </h2>
           <p className="text-text-secondary text-sm mt-1">
-            {predictions.length} matches · {analyzedCount} fully verified ·{" "}
-            {date}
+            {predictions.length} matches · {date}
           </p>
         </div>
         <a
@@ -95,7 +76,6 @@ export default function DailyPredictionsSection() {
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <MatchTypeBadge type={p.match_type} />
               <ProbBadge prob={p.win_probability} />
             </div>
           </div>

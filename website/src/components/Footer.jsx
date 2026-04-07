@@ -8,7 +8,7 @@ export default function Footer() {
         <div>
           <div className="text-base font-bold text-accent mb-2">Maigation</div>
           <p className="text-xs text-text-secondary leading-relaxed">
-            High-probability football predictions for informed betting, verified on SportyBet daily.
+            High-probability football predictions for informed betting, sourced from SoccerVista daily.
           </p>
         </div>
 
