@@ -1,6 +1,98 @@
 {
-  "generated_at": "2026-05-17T23:50:10.458406+00:00",
-  "date": "2026-05-17",
-  "total_predictions": 0,
-  "predictions": []
+  "generated_at": "2026-05-18T23:56:42.760269+00:00",
+  "date": "2026-05-18",
+  "total_predictions": 7,
+  "predictions": [
+    {
+      "rank": 1,
+      "country": "Brazil",
+      "league": "Amapaense 2",
+      "kickoff_utc": "14:30",
+      "home_team": "Cruzeiro AP",
+      "away_team": "ADEC",
+      "predicted_winner": "Cruzeiro AP",
+      "predicted_side": "Home",
+      "winner_form": "D-W",
+      "opponent_form": "L-L",
+      "win_probability": 83.3
+    },
+    {
+      "rank": 2,
+      "country": "Aruba",
+      "league": "Division di Honor",
+      "kickoff_utc": "20:30",
+      "home_team": "Brazil Juniors",
+      "away_team": "Unistars",
+      "predicted_winner": "Brazil Juniors",
+      "predicted_side": "Home",
+      "winner_form": "D-W-D-D-W",
+      "opponent_form": "L-L-L-L-L",
+      "win_probability": 80.0
+    },
+    {
+      "rank": 3,
+      "country": "Brazil",
+      "league": "Brasileiro Women",
+      "kickoff_utc": "20:00",
+      "home_team": "Palmeiras W",
+      "away_team": "Botafogo RJ W",
+      "predicted_winner": "Palmeiras W",
+      "predicted_side": "Home",
+      "winner_form": "D-W-W-D-D",
+      "opponent_form": "L-L-L-D-L",
+      "win_probability": 76.7
+    },
+    {
+      "rank": 4,
+      "country": "Brazil",
+      "league": "Brasileiro Women",
+      "kickoff_utc": "20:00",
+      "home_team": "Cruzeiro W",
+      "away_team": "Corinthians W",
+      "predicted_winner": "Corinthians W",
+      "predicted_side": "Away",
+      "winner_form": "W-W-L-W-W",
+      "opponent_form": "W-D-D-L-D",
+      "win_probability": 70.0
+    },
+    {
+      "rank": 5,
+      "country": "Ecuador",
+      "league": "Liga Pro",
+      "kickoff_utc": "20:00",
+      "home_team": "Guayaquil City",
+      "away_team": "Orense",
+      "predicted_winner": "Orense",
+      "predicted_side": "Away",
+      "winner_form": "W-W-D-W-D",
+      "opponent_form": "L-L-L-W-W",
+      "win_probability": 66.7
+    },
+    {
+      "rank": 6,
+      "country": "Colombia",
+      "league": "Primera B",
+      "kickoff_utc": "20:00",
+      "home_team": "Inter Palmira",
+      "away_team": "Tigres Futbol Club",
+      "predicted_winner": "Inter Palmira",
+      "predicted_side": "Home",
+      "winner_form": "W-D-D-D-L",
+      "opponent_form": "L-L-L-L-W",
+      "win_probability": 60.0
+    },
+    {
+      "rank": 7,
+      "country": "Honduras",
+      "league": "Liga Nacional",
+      "kickoff_utc": "22:15",
+      "home_team": "Real Espana",
+      "away_team": "Marathon",
+      "predicted_winner": "Real Espana",
+      "predicted_side": "Home",
+      "winner_form": "L-W-L-W-W",
+      "opponent_form": "W-L-W-L-L",
+      "win_probability": 60.0
+    }
+  ]
 }
