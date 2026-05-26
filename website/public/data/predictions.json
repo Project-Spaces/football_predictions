@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-25T23:56:41.596115+00:00",
-  "date": "2026-05-25",
-  "total_predictions": 3,
+  "generated_at": "2026-05-26T23:57:32.604113+00:00",
+  "date": "2026-05-26",
+  "total_predictions": 2,
   "predictions": [
     {
       "rank": 1,
-      "country": "Chile",
-      "league": "Liga de Ascenso",
-      "kickoff_utc": "20:00",
-      "home_team": "Copiapo",
-      "away_team": "U. Espanola",
-      "predicted_winner": "U. Espanola",
-      "predicted_side": "Away",
-      "winner_form": "W-W-W-W-D",
-      "opponent_form": "L-W-W-L-L",
+      "country": "Brazil",
+      "league": "Amazonense U20",
+      "kickoff_utc": "15:00",
+      "home_team": "Manauara U20",
+      "away_team": "Manaus FC U20",
+      "predicted_winner": "Manauara U20",
+      "predicted_side": "Home",
+      "winner_form": "W-L-W-W-W",
+      "opponent_form": "L-D-L-D-W",
       "win_probability": 73.3
     },
     {
@@ -21,26 +21,13 @@
       "country": "Aruba",
       "league": "Division di Honor",
       "kickoff_utc": "20:30",
-      "home_team": "Estudiantes",
-      "away_team": "Real Koyari",
-      "predicted_winner": "Real Koyari",
+      "home_team": "Unistars",
+      "away_team": "Jong Aruba",
+      "predicted_winner": "Jong Aruba",
       "predicted_side": "Away",
-      "winner_form": "L-W-L-L-W",
+      "winner_form": "D-D-L-L-W",
       "opponent_form": "L-L-L-L-L",
-      "win_probability": 70.0
-    },
-    {
-      "rank": 3,
-      "country": "Brazil",
-      "league": "Brasileiro Women",
-      "kickoff_utc": "20:00",
-      "home_team": "Corinthians W",
-      "away_team": "Mixto W",
-      "predicted_winner": "Corinthians W",
-      "predicted_side": "Home",
-      "winner_form": "D-L-W-W-L",
-      "opponent_form": "L-L-D-L-L",
-      "win_probability": 70.0
+      "win_probability": 66.7
     }
   ]
 }
