@@ -1,10 +1,23 @@
 {
-  "generated_at": "2026-05-26T23:57:32.604113+00:00",
-  "date": "2026-05-26",
-  "total_predictions": 2,
+  "generated_at": "2026-05-27T23:54:21.762950+00:00",
+  "date": "2026-05-27",
+  "total_predictions": 4,
   "predictions": [
     {
       "rank": 1,
+      "country": "Aruba",
+      "league": "Division di Honor",
+      "kickoff_utc": "20:30",
+      "home_team": "Atl. Deportivo",
+      "away_team": "Deportivo Nacional",
+      "predicted_winner": "Deportivo Nacional",
+      "predicted_side": "Away",
+      "winner_form": "W-W-W-W-W",
+      "opponent_form": "W-L-L-W-L",
+      "win_probability": 80.0
+    },
+    {
+      "rank": 2,
       "country": "Brazil",
       "league": "Amazonense U20",
       "kickoff_utc": "15:00",
@@ -17,17 +30,30 @@
       "win_probability": 73.3
     },
     {
-      "rank": 2,
-      "country": "Aruba",
-      "league": "Division di Honor",
+      "rank": 3,
+      "country": "Brazil",
+      "league": "Copa do Nordeste",
       "kickoff_utc": "20:30",
-      "home_team": "Unistars",
-      "away_team": "Jong Aruba",
-      "predicted_winner": "Jong Aruba",
+      "home_team": "Sport Recife",
+      "away_team": "Fortaleza",
+      "predicted_winner": "Sport Recife",
+      "predicted_side": "Home",
+      "winner_form": "W-W-L-W-W",
+      "opponent_form": "W-L-L-D-D",
+      "win_probability": 73.3
+    },
+    {
+      "rank": 4,
+      "country": "Brazil",
+      "league": "Paraibano U20",
+      "kickoff_utc": "18:00",
+      "home_team": "Serrano PB U20",
+      "away_team": "Treze PB U20",
+      "predicted_winner": "Treze PB U20",
       "predicted_side": "Away",
-      "winner_form": "D-D-L-L-W",
+      "winner_form": "D-W-L-D-D",
       "opponent_form": "L-L-L-L-L",
-      "win_probability": 66.7
+      "win_probability": 70.0
     }
   ]
 }
