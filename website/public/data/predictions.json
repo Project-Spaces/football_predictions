@@ -1,33 +1,59 @@
 {
-  "generated_at": "2026-06-05T23:59:09.943570+00:00",
-  "date": "2026-06-05",
-  "total_predictions": 2,
+  "generated_at": "2026-06-06T23:57:19.846580+00:00",
+  "date": "2026-06-06",
+  "total_predictions": 4,
   "predictions": [
     {
       "rank": 1,
-      "country": "Argentina",
-      "league": "Primera Nacional",
-      "kickoff_utc": "20:30",
-      "home_team": "Gimnasia y Tiro",
-      "away_team": "Midland",
-      "predicted_winner": "Midland",
+      "country": "Australia",
+      "league": "NPL Queensland U23",
+      "kickoff_utc": "23:00",
+      "home_team": "Gold Coast U23",
+      "away_team": "Wynnum Wolves U23",
+      "predicted_winner": "Wynnum Wolves U23",
       "predicted_side": "Away",
-      "winner_form": "W-L-W-W-W",
-      "opponent_form": "D-D-W-L-L",
-      "win_probability": 73.3
+      "winner_form": "W-W-W-W-W",
+      "opponent_form": "L-D-L-L-W",
+      "win_probability": 86.7
     },
     {
       "rank": 2,
       "country": "Australia",
-      "league": "NPL Victoria",
-      "kickoff_utc": "06:30",
-      "home_team": "Preston Lions",
-      "away_team": "Melbourne City U21",
-      "predicted_winner": "Melbourne City U21",
+      "league": "NPL NSW U20",
+      "kickoff_utc": "23:00",
+      "home_team": "Blacktown City U20",
+      "away_team": "Rockdale Ilinden U20",
+      "predicted_winner": "Blacktown City U20",
+      "predicted_side": "Home",
+      "winner_form": "D-W-W-W-W",
+      "opponent_form": "L-W-L-L-L",
+      "win_probability": 83.3
+    },
+    {
+      "rank": 3,
+      "country": "Australia",
+      "league": "NPL Northern NSW",
+      "kickoff_utc": "23:00",
+      "home_team": "Charlestown Azzurri",
+      "away_team": "Cooks Hill United",
+      "predicted_winner": "Cooks Hill United",
       "predicted_side": "Away",
-      "winner_form": "L-W-W-W-W",
-      "opponent_form": "W-L-L-W-W",
-      "win_probability": 60.0
+      "winner_form": "L-W-W-W-L",
+      "opponent_form": "L-L-W-L-L",
+      "win_probability": 70.0
+    },
+    {
+      "rank": 4,
+      "country": "Australia & Oceania",
+      "league": "OFC Championship U19",
+      "kickoff_utc": "21:00",
+      "home_team": "Tonga U19",
+      "away_team": "Papua New Guinea U19",
+      "predicted_winner": "Tonga U19",
+      "predicted_side": "Home",
+      "winner_form": "W-L-D-L-L",
+      "opponent_form": "L-L-L-L-L",
+      "win_probability": 63.3
     }
   ]
 }
