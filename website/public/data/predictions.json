@@ -1,46 +1,20 @@
 {
-  "generated_at": "2026-06-07T23:59:27.129631+00:00",
-  "date": "2026-06-07",
-  "total_predictions": 3,
+  "generated_at": "2026-06-08T23:57:33.107305+00:00",
+  "date": "2026-06-08",
+  "total_predictions": 1,
   "predictions": [
     {
       "rank": 1,
-      "country": "Argentina",
-      "league": "Copa Argentina",
-      "kickoff_utc": "16:00",
-      "home_team": "River Plate",
-      "away_team": "Aldosivi",
-      "predicted_winner": "River Plate",
+      "country": "Brazil",
+      "league": "Cearense U20",
+      "kickoff_utc": "14:00",
+      "home_team": "Ceara U20",
+      "away_team": "Fortaleza U20",
+      "predicted_winner": "Ceara U20",
       "predicted_side": "Home",
-      "winner_form": "W-L-D-W-W",
-      "opponent_form": "D-L-D-L-D",
-      "win_probability": 73.3
-    },
-    {
-      "rank": 2,
-      "country": "Bolivia",
-      "league": "Division Profesional",
-      "kickoff_utc": "15:00",
-      "home_team": "Real Potosi",
-      "away_team": "San Antonio Bulo Bulo",
-      "predicted_winner": "Real Potosi",
-      "predicted_side": "Home",
-      "winner_form": "D-L-L-W-D",
-      "opponent_form": "L-L-L-D-L",
-      "win_probability": 63.3
-    },
-    {
-      "rank": 3,
-      "country": "Bolivia",
-      "league": "Division Profesional",
-      "kickoff_utc": "17:15",
-      "home_team": "The Strongest",
-      "away_team": "Oriente Petrolero",
-      "predicted_winner": "The Strongest",
-      "predicted_side": "Home",
-      "winner_form": "W-D-W-W-D",
-      "opponent_form": "L-D-L-W-W",
-      "win_probability": 63.3
+      "winner_form": "W-D-D-W-W",
+      "opponent_form": "L-L-L-W-W",
+      "win_probability": 66.7
     }
   ]
 }
