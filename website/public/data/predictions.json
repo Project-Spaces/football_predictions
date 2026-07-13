@@ -1,85 +1,20 @@
 {
-  "generated_at": "2026-07-12T23:43:16.950841+00:00",
-  "date": "2026-07-12",
-  "total_predictions": 6,
+  "generated_at": "2026-07-13T23:43:09.836288+00:00",
+  "date": "2026-07-13",
+  "total_predictions": 1,
   "predictions": [
     {
       "rank": 1,
       "country": "Brazil",
-      "league": "Carioca C",
-      "kickoff_utc": "13:45",
-      "home_team": "Ceres",
-      "away_team": "Independente RJ",
-      "predicted_winner": "Independente RJ",
+      "league": "Amazonense U20",
+      "kickoff_utc": "15:00",
+      "home_team": "Librade U20",
+      "away_team": "Cliper U20",
+      "predicted_winner": "Cliper U20",
       "predicted_side": "Away",
-      "winner_form": "W-W-L-W-D",
+      "winner_form": "L-L-L-L-W",
       "opponent_form": "L-L-L-L-L",
-      "win_probability": 83.3
-    },
-    {
-      "rank": 2,
-      "country": "Brazil",
-      "league": "Matogrossense U20",
-      "kickoff_utc": "18:00",
-      "home_team": "Luverdense U20",
-      "away_team": "Cuiaba U20",
-      "predicted_winner": "Cuiaba U20",
-      "predicted_side": "Away",
-      "winner_form": "W-W-W-W-W",
-      "opponent_form": "W-D-D-D-L",
-      "win_probability": 80.0
-    },
-    {
-      "rank": 3,
-      "country": "Australia & Oceania",
-      "league": "OFC Championship U16",
-      "kickoff_utc": "20:00",
-      "home_team": "Tahiti U16",
-      "away_team": "Vanuatu U16",
-      "predicted_winner": "Tahiti U16",
-      "predicted_side": "Home",
-      "winner_form": "W-W-L-L-L",
-      "opponent_form": "L-L-L-L-L",
-      "win_probability": 70.0
-    },
-    {
-      "rank": 4,
-      "country": "Brazil",
-      "league": "Rondoniense U20",
-      "kickoff_utc": "18:00",
-      "home_team": "Pimentense U20",
-      "away_team": "Uniao Cacoalense U20",
-      "predicted_winner": "Uniao Cacoalense U20",
-      "predicted_side": "Away",
-      "winner_form": "W-W-W-L-L",
-      "opponent_form": "W-L-L-L-L",
-      "win_probability": 70.0
-    },
-    {
-      "rank": 5,
-      "country": "Brazil",
-      "league": "Rondoniense U20",
-      "kickoff_utc": "18:00",
-      "home_team": "Ji-Parana U20",
-      "away_team": "Espigao U20",
-      "predicted_winner": "Ji-Parana U20",
-      "predicted_side": "Home",
-      "winner_form": "W-W-L-D-L",
-      "opponent_form": "L-L-D",
-      "win_probability": 67.8
-    },
-    {
-      "rank": 6,
-      "country": "Brazil",
-      "league": "Brasiliense U20",
-      "kickoff_utc": "14:30",
-      "home_team": "Santa Maria U20",
-      "away_team": "Ceilandense U20",
-      "predicted_winner": "Santa Maria U20",
-      "predicted_side": "Home",
-      "winner_form": "W-D-W-L-L",
-      "opponent_form": "D-D-L-D-L",
-      "win_probability": 63.3
+      "win_probability": 60.0
     }
   ]
 }
