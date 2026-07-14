@@ -1,20 +1,6 @@
 {
-  "generated_at": "2026-07-13T23:43:09.836288+00:00",
-  "date": "2026-07-13",
-  "total_predictions": 1,
-  "predictions": [
-    {
-      "rank": 1,
-      "country": "Brazil",
-      "league": "Amazonense U20",
-      "kickoff_utc": "15:00",
-      "home_team": "Librade U20",
-      "away_team": "Cliper U20",
-      "predicted_winner": "Cliper U20",
-      "predicted_side": "Away",
-      "winner_form": "L-L-L-L-W",
-      "opponent_form": "L-L-L-L-L",
-      "win_probability": 60.0
-    }
-  ]
+  "generated_at": "2026-07-14T23:42:10.535358+00:00",
+  "date": "2026-07-14",
+  "total_predictions": 0,
+  "predictions": []
 }
